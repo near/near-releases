@@ -1,5 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
+const repos = require('./repos').repos;
 
 const GITHUB_API_URL = 'https://api.github.com/repos/{owner}/{repo}/releases';
 const TOKEN = process.env.GITHUB_TOKEN;
@@ -21,10 +22,7 @@ async function getLatestReleaseDate(owner, repo) {
 }
 
 async function main() {
-  const repos = [
-    { owner: 'near', repo: 'near-api-js' },
-    // Add more repositories as needed
-  ];
+
 
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
