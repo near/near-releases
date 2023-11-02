@@ -22,8 +22,6 @@ async function getLatestReleaseDate(owner, repo) {
 }
 
 async function main() {
-
-
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
