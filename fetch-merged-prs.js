@@ -18,8 +18,9 @@ const params = {
   per_page: 100,
 };
 
-const startDate = '2023-10-01T00:00:00Z';
-const endDate = '2023-10-31T23:59:59Z';
+const endDate = new Date();
+const startDate = new Date(endDate);
+startDate.setDate(endDate.getDate() - 30);
 
 async function getMergedPRs(owner, repo, startDate, endDate) {
   try {
@@ -50,6 +51,7 @@ async function main() {
       console.log(
         `${owner}/${repo} merged ${PRs.length} PRs in the past month.`
       );
+      PRs.length > 0 ? console.table(PRs, ['title', 'html_url']) : '';
     } catch (error) {
       console.error(`Error checking ${owner}/${repo}: ${error.message}`);
     }
