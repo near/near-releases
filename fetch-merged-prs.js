@@ -10,31 +10,39 @@ const headers = {
   Accept: 'application/vnd.github.v3+json',
 };
 
-const params = {
-  state: 'closed',
-  base: 'main',
-  sort: 'updated',
-  direction: 'desc',
-  per_page: 100,
-};
-
 const endDate = new Date();
 const startDate = new Date(endDate);
 startDate.setDate(endDate.getDate() - 30);
 
 async function getMergedPRs(owner, repo, startDate, endDate) {
+  const baseBranches = ['main', 'master'];
   try {
-    const response = await axios.get(
-      GITHUB_API_URL.replace('{owner}', owner).replace('{repo}', repo),
-      { headers, params }
-    );
-    const mergedPRs = response.data.filter(
-      (pr) =>
-        pr.merged_at &&
-        new Date(pr.merged_at) >= new Date(startDate) &&
-        new Date(pr.merged_at) <= new Date(endDate)
-    );
-    return mergedPRs;
+    for (const base of baseBranches) {
+      const params = {
+        state: 'closed',
+        base: base,
+        sort: 'updated',
+        direction: 'desc',
+        per_page: 100,
+      };
+
+      let response = await axios.get(
+        GITHUB_API_URL.replace('{owner}', owner).replace('{repo}', repo),
+        { headers, params }
+      );
+
+      if (response.data.length > 0) {
+        const mergedPRs = response.data.filter(
+          (pr) =>
+            pr.merged_at &&
+            new Date(pr.merged_at) >= new Date(startDate) &&
+            new Date(pr.merged_at) <= new Date(endDate)
+        );
+        return mergedPRs;
+      } else {
+        console.log(' ');
+      }
+    }
   } catch (error) {
     console.error(
       'Error fetching PRs:',
@@ -48,6 +56,7 @@ async function main() {
   for (const { owner, repo } of repos) {
     try {
       const PRs = await getMergedPRs(owner, repo, startDate, endDate);
+
       //trim PR title to fit in console table
       PRs.map((row) => {
         if (row.title.length > 50) {
