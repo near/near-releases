@@ -48,6 +48,13 @@ async function main() {
   for (const { owner, repo } of repos) {
     try {
       const PRs = await getMergedPRs(owner, repo, startDate, endDate);
+      //trim PR title to fit in console table
+      PRs.map((row) => {
+        if (row.title.length > 50) {
+          row.title = row.title.substring(0, 50) + '...';
+        }
+        return row;
+      });
       console.log(
         `${owner}/${repo} merged ${PRs.length} PRs in the past month.`
       );

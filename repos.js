@@ -4,7 +4,23 @@ exports.repos = [
   { owner: 'near', repo: 'near-sdk-rs' },
   { owner: 'near', repo: 'wallet-selector' },
   { owner: 'near', repo: 'near-discovery' },
+  { owner: 'near', repo: 'near-discovery-components' },
+  { owner: 'nearsocial', repo: 'viewer' },
+  { owner: 'nearsocial', repo: 'vm' },
+  { owner: 'nearsocial', repo: 'social-db' },
+  {owner: 'near', repo: 'near-cli'},
+  {owner: 'near', repo: 'near-cli-rs'},
   { owner: 'near', repo: 'bos-web-engine' },
-  // Add more repositories as needed
+  { owner: 'near', repo: 'queryapi' },
+  { owner: 'idos-network', repo: 'idos-sdk-js' },
+  { owner: 'near', repo: 'fast-auth-signer' },
+  { owner: 'near', repo: 'mpc-recovery' },
+  {owner: 'near', repo: 'near-vscode'},
+  {owner: 'near', repo: 'create-near-app'},
+  {owner: 'near', repo: 'bos-loader'},
+  {owner: 'bos-cli-rs', repo: 'bos-cli-rs'},
+  {owner: 'keypom', repo: 'keypom'},
+  {owner: 'near', repo: 'near-workspaces-rs'},
+  {owner: 'near', repo: 'near-workspaces-js'},
+  {owner: 'near', repo: 'docs'}
 ];
-
