@@ -25,20 +25,26 @@ async function main() {
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
+  let releases = []
+  let noReleases = [];
+
   for (const { owner, repo } of repos) {
     try {
       const latestReleaseDate = await getLatestReleaseDate(owner, repo);
       if (latestReleaseDate && latestReleaseDate > oneMonthAgo) {
-        console.log(
-          `${owner}/${repo} has a new release published on: ${latestReleaseDate}`
-        );
+        releases.push({ owner, repo, latestReleaseDate});
       } else {
-        console.log(`No new releases in the past month for: ${owner}/${repo}`);
+        noReleases.push(repo);
       }
     } catch (error) {
       console.error(`Error checking ${owner}/${repo}: ${error.message}`);
     }
   }
+  console.log('New releases in the past month for:');
+  console.table(releases);
+  console.log('No new releases in the past month for:');
+  console.table(noReleases);
 }
 
 main();
+git
