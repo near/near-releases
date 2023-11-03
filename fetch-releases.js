@@ -19,10 +19,13 @@ async function main() {
 
   for (const { owner, repo } of repos) {
     try {
-      const latestReleaseDate = await getLatestReleases(owner, repo);
+      const fetchedReleases = await getLatestReleases(owner, repo);
+      let latestReleaseDate = null;
+      fetchedReleases ? latestReleaseDate = new Date(fetchedReleases[0].published_at) : null;
       if (latestReleaseDate && latestReleaseDate > oneMonthAgo) {
-        // const link = release[0].html_url;
-        releases.push({ owner, repo });
+        const release_url = fetchedReleases[0].html_url;
+        const tag_name = fetchedReleases[0].tag_name;
+        releases.push({ repo, tag_name , release_url });
       } else {
         noReleases.push(repo);
       }

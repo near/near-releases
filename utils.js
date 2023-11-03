@@ -18,7 +18,7 @@ async function getLatestReleases(owner, repo) {
   if (releases.length === 0) {
     return null;
   }
-  return new Date(releases[0].published_at);
+  return releases;
 }
 
 function generateMarkdown(data, oneMonthAgo) {
