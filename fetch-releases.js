@@ -1,5 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
+const fs = require('fs').promises;
 const repos = require('./repos').repos;
 
 const GITHUB_API_URL = 'https://api.github.com/repos/{owner}/{repo}/releases';
@@ -21,18 +22,49 @@ async function getLatestReleaseDate(owner, repo) {
   return new Date(releases[0].published_at);
 }
 
+function generateMarkdown(data, oneMonthAgo) {
+  if (!data.length) {
+    return '# NEAR Dev Report: \n\nNo data available.';
+  }
+
+  const headers = Object.keys(data[0]);
+  let markdownContent = `# NEAR Dev Releases - ${oneMonthAgo} \n\n`;
+
+  // Generate table headers
+  markdownContent += `| ${headers.join(' | ')} |\n`;
+  // Generate separators
+  markdownContent += `| ${headers.map(() => '---').join(' | ')} |\n`;
+
+  // Generate the table rows
+  for (const item of data) {
+    const row = headers.map((header) => item[header]).join(' | ');
+    markdownContent += `| ${row} |\n`;
+  }
+
+  return markdownContent;
+}
+
+// Function to write markdown content to a file
+async function writeMarkdownFile(filename, content) {
+  await fs.writeFile(filename, content, 'utf8');
+  console.log(`Markdown file '${filename}' has been generated.`);
+}
+
 async function main() {
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
-  let releases = []
+  const formattedDate = oneMonthAgo.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+  let releases = [];
   let noReleases = [];
 
   for (const { owner, repo } of repos) {
+    console.log(`Checking ${owner}/${repo}...`);
     try {
       const latestReleaseDate = await getLatestReleaseDate(owner, repo);
       if (latestReleaseDate && latestReleaseDate > oneMonthAgo) {
-        releases.push({ owner, repo, latestReleaseDate});
+        releases.push({ owner, repo, latestReleaseDate });
       } else {
         noReleases.push(repo);
       }
@@ -40,6 +72,14 @@ async function main() {
       console.error(`Error checking ${owner}/${repo}: ${error.message}`);
     }
   }
+  console.log('Generating markdown report...');
+  const markdown = generateMarkdown(
+    releases,
+    formattedDate
+  );
+  const reportFilename = `./reports/releases/${formattedDate}.md`;
+  await writeMarkdownFile(reportFilename, markdown);
+
   console.log('New releases in the past month for:');
   console.table(releases);
   console.log('No new releases in the past month for:');
@@ -47,4 +87,3 @@ async function main() {
 }
 
 main();
-git
