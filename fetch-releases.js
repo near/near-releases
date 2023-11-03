@@ -1,31 +1,32 @@
 const {
   generateMarkdown,
   writeMarkdownFile,
-  getLatestReleases,
+  getReleases,
+  getDates,
 } = require('./utils');
 const repos = require('./repos').repos;
 
+// 0 = January, 11 = December
+const MONTH = 6;
+const YEAR = 2023;
+const dates = getDates(MONTH, YEAR);
+
 async function main() {
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-
-  const formattedDate = oneMonthAgo.toLocaleString('default', {
-    month: 'long',
-    year: 'numeric',
-  });
-
   let releases = [];
   let noReleases = [];
 
   for (const { owner, repo } of repos) {
     try {
-      const fetchedReleases = await getLatestReleases(owner, repo);
-      let latestReleaseDate = null;
-      fetchedReleases ? latestReleaseDate = new Date(fetchedReleases[0].published_at) : null;
-      if (latestReleaseDate && latestReleaseDate > oneMonthAgo) {
+      const fetchedReleases = await getReleases(
+        owner,
+        repo,
+        dates.startDate,
+        dates.endDate
+      );
+      if (fetchedReleases.length > 0) {
         const release_url = fetchedReleases[0].html_url;
-        const tag_name = fetchedReleases[0].tag_name;
-        releases.push({ repo, tag_name , release_url });
+        const release_date = fetchedReleases[0].published_at.split('T')[0];
+        releases.push({ repo, release_date, release_url });
       } else {
         noReleases.push(repo);
       }
@@ -35,13 +36,13 @@ async function main() {
     console.log(`✅ - ${repo} `);
   }
   console.log('\n');
-  const markdown = generateMarkdown(releases, formattedDate);
-  const reportFilename = `./reports/releases/${formattedDate}.md`;
+  const markdown = generateMarkdown(releases, dates.markdownDate);
+  const reportFilename = `./reports/releases/${YEAR}-${MONTH + 1}.md`;
   await writeMarkdownFile(reportFilename, markdown);
 
-  console.log('🎉 - New releases in the past month for:');
+  console.log(`🎉 - New releases for ${dates.monthSpelled} ${YEAR}:`);
   console.table(releases);
-  console.log('🙅 - No new releases in the past month for:');
+  console.log(`🙅 - No new releases in ${dates.monthSpelled} ${YEAR} for:`);
   console.table(noReleases);
 }
 

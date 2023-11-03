@@ -1,5 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
+const { getDates } = require('./utils');
 const repos = require('./repos').repos;
 
 const GITHUB_API_URL = 'https://api.github.com/repos/{owner}/{repo}/pulls';
@@ -10,11 +11,15 @@ const headers = {
   Accept: 'application/vnd.github.v3+json',
 };
 
-const endDate = new Date();
-const startDate = new Date(endDate);
-startDate.setDate(endDate.getDate() - 30);
+// 0 = January, 11 = December
+const MONTH = 6;
+const YEAR = 2023;
+const dates = getDates(MONTH, YEAR);
+const startDate = dates.startDate;
+const endDate = dates.endDate;
 
 async function getMergedPRs(owner, repo, startDate, endDate) {
+  console.log(`Checking ${repo}... `);
   const baseBranches = ['main', 'master'];
   try {
     for (const base of baseBranches) {
@@ -39,8 +44,6 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
             new Date(pr.merged_at) <= new Date(endDate)
         );
         return mergedPRs;
-      } else {
-        console.log(' ');
       }
     }
   } catch (error) {
@@ -64,8 +67,9 @@ async function main() {
         }
         return row;
       });
+
       console.log(
-        `${owner}/${repo} merged ${PRs.length} PRs in the past month.`
+        `${owner}/${repo} merged ${PRs.length} PRs for the month of ${dates.monthSpelled}.`
       );
       PRs.length > 0 ? console.table(PRs, ['title', 'html_url']) : '';
     } catch (error) {
