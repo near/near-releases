@@ -10,7 +10,7 @@ const HEADERS = {
   Accept: 'application/vnd.github.v3+json',
 };
 
-async function getLatestReleaseDate(owner, repo) {
+async function getLatestReleases(owner, repo) {
   const response = await axios.get(
     GITHUB_API_URL.replace('{owner}', owner).replace('{repo}', repo),
     { headers: HEADERS }
@@ -47,42 +47,43 @@ function generateMarkdown(data, oneMonthAgo) {
 // Function to write markdown content to a file
 async function writeMarkdownFile(filename, content) {
   await fs.writeFile(filename, content, 'utf8');
-  console.log(`Markdown file '${filename}' has been generated.`);
+  console.log(`Markdown file '${filename}' has been generated. \n`);
 }
 
 async function main() {
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
-  const formattedDate = oneMonthAgo.toLocaleString('default', { month: 'long', year: 'numeric' });
+  const formattedDate = oneMonthAgo.toLocaleString('default', {
+    month: 'long',
+    year: 'numeric',
+  });
 
   let releases = [];
   let noReleases = [];
 
   for (const { owner, repo } of repos) {
-    console.log(`Checking ${owner}/${repo}...`);
     try {
-      const latestReleaseDate = await getLatestReleaseDate(owner, repo);
+      const latestReleaseDate = await getLatestReleases(owner, repo);
       if (latestReleaseDate && latestReleaseDate > oneMonthAgo) {
-        releases.push({ owner, repo, latestReleaseDate });
+        // const link = release[0].html_url;
+        releases.push({ owner, repo });
       } else {
         noReleases.push(repo);
       }
     } catch (error) {
-      console.error(`Error checking ${owner}/${repo}: ${error.message}`);
+      console.error(`⛔️ - Error fetching ${owner}/${repo}: ${error.message}`);
     }
+    console.log(`✅ - ${repo} `);
   }
-  console.log('Generating markdown report...');
-  const markdown = generateMarkdown(
-    releases,
-    formattedDate
-  );
+  console.log('\n');
+  const markdown = generateMarkdown(releases, formattedDate);
   const reportFilename = `./reports/releases/${formattedDate}.md`;
   await writeMarkdownFile(reportFilename, markdown);
 
-  console.log('New releases in the past month for:');
+  console.log('🎉 - New releases in the past month for:');
   console.table(releases);
-  console.log('No new releases in the past month for:');
+  console.log('🙅 - No new releases in the past month for:');
   console.table(noReleases);
 }
 
