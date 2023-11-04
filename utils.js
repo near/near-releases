@@ -90,16 +90,17 @@ function generateMarkdown(data, markdownDate) {
 
 async function writeMarkdownFile(filename, content) {
   await fs.writeFile(filename, content, 'utf8');
-  console.log(`Markdown file '${filename}' has been generated. \n`);
+  console.log(` 🚀 Report created @ '${filename} \n\n`);
 }
 
 function getDates(month, year) {
-  const startDate = new Date(year, month, 1);
+  const startDate = new Date(year, month - 1, 1);
   const endDate = new Date(year, month + 1, 0);
   const monthSpelled = startDate.toLocaleString('default', { month: 'long' });
+  const twoDigitMonth = month < 10 ? `0${month}` : month;
   const markdownDate = { monthSpelled, year };
 
-  return { startDate, endDate, markdownDate, monthSpelled };
+  return { startDate, endDate, markdownDate, monthSpelled, twoDigitMonth };
 }
 
 module.exports = {

@@ -6,12 +6,12 @@ const {
 } = require('./utils');
 const repos = require('./repos').repos;
 
-// 0 = January, 11 = December
-const MONTH = 6;
+const MONTH = 7;
 const YEAR = 2023;
 const dates = getDates(MONTH, YEAR);
 
 async function main() {
+  console.log('\n Fetching releases for the following repositories:\n');
   let releases = [];
   let reposWithNoReleases = [];
 
@@ -33,16 +33,18 @@ async function main() {
     } catch (error) {
       console.error(`⛔️ - Error fetching ${owner}/${repo}: ${error.message}`);
     }
-    console.log(`✅ - ${repo} `);
+    console.log(` ✅ - ${repo} `);
   }
-  console.log('\n');
-  const markdown = generateMarkdown(releases, dates.markdownDate);
-  const reportFilename = `./reports/releases/${YEAR}-${MONTH + 1}.md`;
-  await writeMarkdownFile(reportFilename, markdown);
+  console.log('\n 👍 All repositories checked \n');
 
-  console.log(`🎉 - New releases for ${dates.monthSpelled} ${YEAR}:`);
+  const markdown = generateMarkdown(releases, dates.markdownDate);
+  const reportFilename = `./reports/releases/${YEAR}-${dates.twoDigitMonth}.md`;
+  await writeMarkdownFile(reportFilename, markdown);
+  console.log('-------------------------------------------------\n\n')
+  console.log(` 🎉 - ${dates.monthSpelled} ${YEAR} New Releases:`);
   console.table(releases);
-  console.log(`🙅 - No new releases in ${dates.monthSpelled} ${YEAR} for:`);
+  console.log('\n\n\n');
+  console.log(`  🙅 - No new releases found:`);
   console.table(reposWithNoReleases);
 }
 
