@@ -6,7 +6,7 @@ const {
 } = require('./utils');
 const repos = require('./repos').repos;
 
-const MONTH = 7;
+const MONTH = 9;
 const YEAR = 2023;
 const dates = getDates(MONTH, YEAR);
 
@@ -44,8 +44,8 @@ async function main() {
   console.log(` 🎉 - ${dates.monthSpelled} ${YEAR} New Releases:`);
   console.table(releases);
   console.log('\n\n\n');
-  console.log(`  🙅 - No new releases found:`);
-  console.table(reposWithNoReleases);
+  // console.log(`  🙅 - No new releases found:`);
+  // console.table(reposWithNoReleases);
 }
 
 main();

@@ -95,7 +95,7 @@ async function writeMarkdownFile(filename, content) {
 
 function getDates(month, year) {
   const startDate = new Date(year, month - 1, 1);
-  const endDate = new Date(year, month + 1, 0);
+  const endDate = new Date(year, month, 0);
   const monthSpelled = startDate.toLocaleString('default', { month: 'long' });
   const twoDigitMonth = month < 10 ? `0${month}` : month;
   const markdownDate = { monthSpelled, year };
