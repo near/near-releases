@@ -13,7 +13,7 @@ const dates = getDates(MONTH, YEAR);
 
 async function main() {
   let releases = [];
-  let noReleases = [];
+  let reposWithNoReleases = [];
 
   for (const { owner, repo } of repos) {
     try {
@@ -28,7 +28,7 @@ async function main() {
         const release_date = fetchedReleases[0].published_at.split('T')[0];
         releases.push({ repo, release_date, release_url });
       } else {
-        noReleases.push(repo);
+        reposWithNoReleases.push(repo);
       }
     } catch (error) {
       console.error(`⛔️ - Error fetching ${owner}/${repo}: ${error.message}`);
@@ -43,7 +43,7 @@ async function main() {
   console.log(`🎉 - New releases for ${dates.monthSpelled} ${YEAR}:`);
   console.table(releases);
   console.log(`🙅 - No new releases in ${dates.monthSpelled} ${YEAR} for:`);
-  console.table(noReleases);
+  console.table(reposWithNoReleases);
 }
 
 main();

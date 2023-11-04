@@ -20,8 +20,8 @@ async function getReleases(owner, repo, startDate, endDate) {
   if (response.data.length > 0) {
     response.data.forEach((release) => {
       if (
-        new Date(release.published_at) >= new Date(startDate) &&
-        new Date(release.published_at) <= new Date(endDate)
+        new Date(release.published_at) >= startDate &&
+        new Date(release.published_at) <= endDate
       ) {
         releases.push(release);
       }
