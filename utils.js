@@ -4,6 +4,7 @@ const axios = require('axios');
 
 const GITHUB_RELEASE_API_URL =
   'https://api.github.com/repos/{owner}/{repo}/releases';
+const GITHUB_PR_API_URL = 'https://api.github.com/repos/{owner}/{repo}/pulls';
 const TOKEN = process.env.GITHUB_TOKEN;
 const HEADERS = {
   Authorization: `token ${TOKEN}`,
@@ -27,6 +28,43 @@ async function getReleases(owner, repo, startDate, endDate) {
     });
   }
   return releases;
+}
+
+async function getMergedPRs(owner, repo, startDate, endDate) {
+  console.log(`🔎 checking ${repo}...`);
+  const baseBranches = ['main', 'master'];
+  try {
+    for (const base of baseBranches) {
+      const params = {
+        state: 'closed',
+        base: base,
+        sort: 'updated',
+        direction: 'desc',
+        per_page: 100,
+      };
+
+      let response = await axios.get(
+        GITHUB_PR_API_URL.replace('{owner}', owner).replace('{repo}', repo),
+        { headers: HEADERS, params }
+      );
+
+      if (response.data.length > 0) {
+        const mergedPRs = response.data.filter(
+          (pr) =>
+            pr.merged_at &&
+            new Date(pr.merged_at) >= new Date(startDate) &&
+            new Date(pr.merged_at) <= new Date(endDate)
+        );
+        return mergedPRs;
+      }
+    }
+  } catch (error) {
+    console.error(
+      'Error fetching PRs:',
+      error.response ? error.response.data : error.message
+    );
+    return null;
+  }
 }
 
 function generateMarkdown(data, markdownDate) {
@@ -61,12 +99,13 @@ function getDates(month, year) {
   const monthSpelled = startDate.toLocaleString('default', { month: 'long' });
   const markdownDate = { monthSpelled, year };
 
-  return { startDate, endDate, markdownDate, monthSpelled};
+  return { startDate, endDate, markdownDate, monthSpelled };
 }
 
 module.exports = {
   generateMarkdown,
   writeMarkdownFile,
   getReleases,
+  getMergedPRs,
   getDates,
 };
