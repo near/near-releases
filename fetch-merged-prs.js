@@ -20,7 +20,8 @@ async function main() {
       if (PRs.length > 0) {
         //trim PR title
         PRs.map((row) => {
-          if (row.title.length > 50) {
+          row.merged_at = row.merged_at.split('T')[0];
+          if (row.title.length > 40) {
             row.title = row.title.substring(0, 50) + '...';
           }
           return row;
@@ -42,7 +43,7 @@ async function main() {
   );
   reposWithPRs.forEach((repo) => {
     console.log(repo.repo);
-    console.table(repo.PRs, ['title', 'html_url']);
+    console.table(repo.PRs, ['title', 'merged_at', 'html_url']);
   });
 
   console.log('\n');
