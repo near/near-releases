@@ -67,13 +67,14 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
   }
 }
 
-function generateMarkdown(data, markdownDate) {
+function generateMarkdown(data) {
   if (!data.length) {
     return '# NEAR Dev Report: \n\nNo data available.';
   }
-
+  // console.log(data)
   const headers = Object.keys(data[0]);
-  let markdownContent = `# NEAR Dev Releases - ${markdownDate.month} ${markdownDate.year} \n\n`;
+
+  let markdownContent = '';
 
   // Generate headers
   markdownContent += `| ${headers.join(' | ')} |\n`;

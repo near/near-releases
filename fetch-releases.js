@@ -6,7 +6,7 @@ const {
 } = require('./utils');
 const repos = require('./repos').repos;
 
-const MONTH = 9;
+const MONTH = 11;
 const YEAR = 2023;
 const dates = getDates(MONTH, YEAR);
 
