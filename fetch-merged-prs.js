@@ -7,8 +7,7 @@ const {
 } = require('./utils');
 const repos = require('./test-repos').repos;
 
-// 0 = January, 11 = December
-const MONTH = 6;
+const MONTH = 10;
 const YEAR = 2023;
 const dates = getDates(MONTH, YEAR);
 const startDate = dates.startDate;
@@ -21,7 +20,6 @@ async function main() {
   for (const { owner, repo } of repos) {
     try {
       const PRs = await getMergedPRs(owner, repo, startDate, endDate);
-
       if (PRs.length > 0) {
         let prList = [];
         PRs.forEach((pr) => {
@@ -47,16 +45,22 @@ async function main() {
     return acc;
   }, 0);
 
-  let markdownContent = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
+  let markdownContent = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n`;
+
+  // Generate Table of Contents
+  markdownContent += `## Table of Contents\n`;
+  reposWithPRs.forEach((repo) => {
+    markdownContent += `- [${repo.repo.toUpperCase()}](#${repo.repo.toLowerCase()})\n`;
+  });
   reposWithPRs.forEach((repo) => {
     console.log(repo.repo);
     console.table(repo.prList, ['title', 'merged_at', 'html_url']);
     const markdown = generateMarkdown(repo.prList);
-    markdownContent += `\n## 🚀 -  ${repo.repo.toUpperCase()}\n\n` + markdown;
+    markdownContent += `\n## ${repo.repo.toUpperCase()}\n\n` + markdown;
   });
   const reportFilename = `./reports/merged-prs/${YEAR}-${dates.twoDigitMonth}.md`;
   await writeMarkdownFile(reportFilename, markdownContent);
-  console.log('\n');
+  console.log('-------------------------------------------------\n\n');
   console.log(
     `🚀 ${totalPRs} merged PRs found for ${dates.monthSpelled} ${YEAR}:\n`
   );

@@ -81,6 +81,7 @@ function generateMarkdown(data) {
   // Generate separators
   markdownContent += `| ${headers.map(() => '---').join(' | ')} |\n`;
 
+
   // Generate table rows
   for (const item of data) {
     const row = headers.map((header) => item[header]).join(' | ');
