@@ -14,6 +14,9 @@ const startDate = dates.startDate;
 const endDate = dates.endDate;
 
 async function main() {
+  console.log(
+    '\n Fetching merged pull requests for the following repositories:\n'
+  );
   let reposWithNoPRs = [];
   let reposWithPRs = [];
 
@@ -40,20 +43,26 @@ async function main() {
       console.error(`⛔️ - Error checking ${owner}/${repo}: ${error.message}`);
     }
   }
+  console.log('\n 👍 All repositories checked \n');
+  console.log('-------------------------------------------------\n');
   const totalPRs = reposWithPRs.reduce((acc, repo) => {
     acc += repo.prList.length;
     return acc;
   }, 0);
 
-  let markdownContent = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n`;
+  console.log(
+    ` 🚀 ${totalPRs} merged PRs found for ${dates.monthSpelled} ${YEAR}\n\n`
+  );
+
+  let markdownContent = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
 
   // Generate Table of Contents
-  markdownContent += `## Table of Contents\n`;
+  markdownContent += `## Table of Contents\n\n`;
   reposWithPRs.forEach((repo) => {
     markdownContent += `- [${repo.repo.toUpperCase()}](#${repo.repo})\n`;
   });
 
-  markdownContent += `\n-------------------------------------------------\n\n`
+  markdownContent += `\n-------------------------------------------------\n`;
 
   reposWithPRs.forEach((repo) => {
     const markdown = generateMarkdown(repo.prList);
@@ -61,13 +70,9 @@ async function main() {
   });
   const reportFilename = `./reports/merged-prs/${YEAR}-${dates.twoDigitMonth}.md`;
   await writeMarkdownFile(reportFilename, markdownContent);
-  console.log('-------------------------------------------------\n\n');
-  console.log(
-    `🚀 ${totalPRs} merged PRs found for ${dates.monthSpelled} ${YEAR}:\n`
-  );
 
-  console.log('\n');
-  console.log(`🙅 - No merged PRs in ${dates.monthSpelled} ${YEAR} for:`);
+  console.log('-------------------------------------------------\n');
+  console.log(` ⚠️  NO MERGED PRS FOUND ⚠️`);
   console.table(reposWithNoPRs);
 }
 

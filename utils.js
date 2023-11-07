@@ -31,7 +31,6 @@ async function getReleases(owner, repo, startDate, endDate) {
 }
 
 async function getMergedPRs(owner, repo, startDate, endDate) {
-  console.log(`🔎 checking ${repo}...`);
   const baseBranches = ['main', 'master'];
   try {
     for (const base of baseBranches) {
@@ -55,6 +54,7 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
             new Date(pr.merged_at) >= new Date(startDate) &&
             new Date(pr.merged_at) <= new Date(endDate)
         );
+        console.log(` ✅ - ${repo} `);
         return mergedPRs;
       }
     }
@@ -68,7 +68,6 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
 }
 
 function generateMarkdown(data) {
-  console.log(data);
   if (!data.length) {
     return '# NEAR Dev Report: \n\nNo data available.';
   }
@@ -92,7 +91,7 @@ function generateMarkdown(data) {
 
 async function writeMarkdownFile(filename, content) {
   await fs.writeFile(filename, content, 'utf8');
-  console.log(` 🚀 Report created @ '${filename} \n\n`);
+  console.log(` 📝 Report created @ ${filename}\n\n`);
 }
 
 function getDates(month, year) {
