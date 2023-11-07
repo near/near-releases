@@ -5,7 +5,7 @@ const {
   generateMarkdown,
   writeMarkdownFile,
 } = require('./utils');
-const repos = require('./test-repos').repos;
+const repos = require('./repos').repos;
 
 const MONTH = 10;
 const YEAR = 2023;
