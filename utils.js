@@ -67,26 +67,60 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
   }
 }
 
-function generateMarkdown(data) {
+function formatPRs(prs) {
+  let prList = [];
+  prs.forEach((pr) => {
+    pr.merged_at = pr.merged_at.split('T')[0];
+    if (pr.title.length > 40) {
+      pr.title = pr.title.substring(0, 50) + '...';
+    }
+    prList.push({
+      merged_at: pr.merged_at,
+      num: `[${pr.number}](${pr.html_url})`,
+      title: `[${pr.title}](${pr.html_url})`,
+    });
+    return;
+  });
+  return prList;
+}
+function generateMarkdownTable(data) {
   if (!data.length) {
     return '# NEAR Dev Report: \n\nNo data available.';
   }
-  // console.log(data)
   const headers = Object.keys(data[0]);
 
-  let markdownContent = '';
+  let markdownTable = '';
 
   // Generate headers
-  markdownContent += `| ${headers.join(' | ')} |\n`;
+  markdownTable += `| ${headers.join(' | ')} |\n`;
   // Generate separators
-  markdownContent += `| ${headers.map(() => '---').join(' | ')} |\n`;
+  markdownTable += `| ${headers.map(() => '---').join(' | ')} |\n`;
 
   // Generate table rows
   for (const item of data) {
     const row = headers.map((header) => item[header]).join(' | ');
-    markdownContent += `| ${row} |\n`;
+    markdownTable += `| ${row} |\n`;
   }
-  return markdownContent;
+  return markdownTable;
+}
+
+function generatePRsMarkdownDoc(repos, dates) {
+  let markdownDoc = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
+
+  // Generate Table of Contents
+  markdownDoc += `## Table of Contents\n\n`;
+  repos.forEach((repo) => {
+    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo})\n`;
+  });
+
+  markdownDoc += `\n-------------------------------------------------\n`;
+
+  // Generate PR tables
+  repos.forEach((repo) => {
+    let markdownTable = generateMarkdownTable(repo.prList);
+    markdownDoc += `\n## ${repo.repo.toUpperCase()}\n\n` + markdownTable;
+  });
+  return markdownDoc;
 }
 
 async function writeMarkdownFile(filename, content) {
@@ -104,10 +138,21 @@ function getDates(month, year) {
   return { startDate, endDate, markdownDate, monthSpelled, twoDigitMonth };
 }
 
+function countPRs(repos) {
+  let totalPRs = 0;
+  repos.forEach((repo) => {
+    totalPRs += repo.prList.length;
+  });
+  return totalPRs;
+}
+
 module.exports = {
-  generateMarkdown,
+  generateMarkdownTable,
+  generatePRsMarkdownDoc,
   writeMarkdownFile,
   getReleases,
   getMergedPRs,
   getDates,
+  formatPRs,
+  countPRs,
 };
