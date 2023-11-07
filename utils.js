@@ -68,6 +68,7 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
 }
 
 function generateMarkdown(data) {
+  console.log(data);
   if (!data.length) {
     return '# NEAR Dev Report: \n\nNo data available.';
   }
@@ -80,7 +81,6 @@ function generateMarkdown(data) {
   markdownContent += `| ${headers.join(' | ')} |\n`;
   // Generate separators
   markdownContent += `| ${headers.map(() => '---').join(' | ')} |\n`;
-
 
   // Generate table rows
   for (const item of data) {

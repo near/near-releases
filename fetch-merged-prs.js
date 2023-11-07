@@ -28,9 +28,9 @@ async function main() {
             pr.title = pr.title.substring(0, 50) + '...';
           }
           prList.push({
-            title: pr.title,
             merged_at: pr.merged_at,
-            html_url: pr.html_url,
+            num: `[${pr.number}](${pr.html_url})`,
+            title: `[${pr.title}](${pr.html_url})`,
           });
           return;
         });
@@ -50,11 +50,12 @@ async function main() {
   // Generate Table of Contents
   markdownContent += `## Table of Contents\n`;
   reposWithPRs.forEach((repo) => {
-    markdownContent += `- [${repo.repo.toUpperCase()}](#${repo.repo.toLowerCase()})\n`;
+    markdownContent += `- [${repo.repo.toUpperCase()}](#${repo.repo})\n`;
   });
+
+  markdownContent += `\n-------------------------------------------------\n\n`
+
   reposWithPRs.forEach((repo) => {
-    console.log(repo.repo);
-    console.table(repo.prList, ['title', 'merged_at', 'html_url']);
     const markdown = generateMarkdown(repo.prList);
     markdownContent += `\n## ${repo.repo.toUpperCase()}\n\n` + markdown;
   });
