@@ -47,12 +47,12 @@ async function main() {
     return acc;
   }, 0);
 
-  let markdownContent = `# NEAR Developer Repo's Merged PRs - ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
+  let markdownContent = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
   reposWithPRs.forEach((repo) => {
     console.log(repo.repo);
     console.table(repo.prList, ['title', 'merged_at', 'html_url']);
     const markdown = generateMarkdown(repo.prList);
-    markdownContent += `\n### ${repo.repo}: \n\n` + markdown;
+    markdownContent += `\n## 🚀 -  ${repo.repo.toUpperCase()}\n\n` + markdown;
   });
   const reportFilename = `./reports/merged-prs/${YEAR}-${dates.twoDigitMonth}.md`;
   await writeMarkdownFile(reportFilename, markdownContent);
