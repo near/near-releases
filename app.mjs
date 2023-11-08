@@ -13,7 +13,7 @@ console.log(
     ' - Query many repositories and generate markdown reports\n - List all releases and merged pull requests for a given month\n - Email the results \n\n (Press ^C at any time to quit)\n'
   )
 );
-x
+
 inquirer
   .prompt([
     {

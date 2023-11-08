@@ -8,12 +8,11 @@ const {
   countPRs,
 } = require('../utils');
 const repos = require('../data/repos').repos;
-const { config } = require('../config');
 const dates = getDates(process.argv[2], process.argv[3]);
 
 async function main() {
   console.log(
-    '\n Fetching merged pull requests for the following repositories:\n'
+    '\n - L👀king for merged pull requests for the following repositories:\n'
   );
 
   let reposWithPRs = [];
@@ -39,17 +38,17 @@ async function main() {
 
   const totalPRs = countPRs(reposWithPRs);
   const markdownContent = generatePRsMarkdownDoc(reposWithPRs, dates);
-  const reportFilename = `./reports/merged-prs/${config.year}-${dates.twoDigitMonth}.md`;
+  const reportFilename = `./reports/merged-prs/${process.argv[3]}-${dates.twoDigitMonth}.md`;
 
   console.log('-------------------------------------------------\n');
   console.log(
-    ` 🚀 ${totalPRs} merged PRs found for ${dates.monthSpelled} ${config.year}\n\n`
+    ` 🚀 ${totalPRs} merged PRs found for ${dates.monthSpelled} ${process.argv[3]}\n`
   );
 
   await writeMarkdownFile(reportFilename, markdownContent);
 
   console.log('-------------------------------------------------\n');
-  console.log(` ⚠️  NO MERGED PRS FOUND ⚠️`);
+  console.log(` ⚠️  NO MERGED PRS FOUND FOR THE FOLLOWING REPOS:`);
   console.table(reposWithNoPRs);
 }
 

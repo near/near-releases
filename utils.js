@@ -46,7 +46,7 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
             new Date(pr.merged_at) >= new Date(startDate) &&
             new Date(pr.merged_at) <= new Date(endDate)
         );
-        console.log(` ✅ - ${repo} `);
+        process.stdout.write(` ✅ - ${repo}`);
         return mergedPRs;
       }
     }
@@ -117,7 +117,7 @@ function generatePRsMarkdownDoc(repos, dates) {
 
 async function writeMarkdownFile(filename, content) {
   await fs.writeFile(filename, content, 'utf8');
-  console.log(` 📝 Report created @ ${filename}\n\n`);
+  console.log(` 📝 Report created @ ${filename}\n`);
 }
 
 function getDates(month, year) {
