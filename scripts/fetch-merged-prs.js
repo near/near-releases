@@ -6,9 +6,9 @@ const {
   generatePRsMarkdownDoc,
   formatPRs,
   countPRs,
-} = require('./utils');
-const repos = require('./data/repos').repos;
-const { config } = require('./config');
+} = require('../utils');
+const repos = require('../data/repos').repos;
+const { config } = require('../config');
 const dates = getDates(config.month, config.year);
 
 async function main() {
