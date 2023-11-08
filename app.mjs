@@ -7,10 +7,15 @@ const scripts = [
   { name: 'Get Merged PRs', value: './scripts/fetch-merged-prs.js' },
 ];
 
-console.log(chalk.greenBright.bold('\n GitHub Repository Reports'));
+console.log(chalk.greenBright.bold('\n Release & Merged PR Aggregator 🚀'));
+console.log(
+  chalk.cyan(
+    ' ▻ Query many repositories \n ▻ Generate markdown reports \n ▻ Email results \n'
+  )
+);
 console.log(
   chalk.dim(
-    ' - Query many repositories and generate markdown reports\n - List all releases and merged pull requests for a given month\n - Email the results \n\n (Press ^C at any time to quit)\n'
+    '(Press ^C at any time to quit)\n'
   )
 );
 
