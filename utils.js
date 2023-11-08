@@ -1,20 +1,12 @@
 require('dotenv').config();
 const fs = require('fs').promises;
 const axios = require('axios');
-
-const GITHUB_RELEASE_API_URL =
-  'https://api.github.com/repos/{owner}/{repo}/releases';
-const GITHUB_PR_API_URL = 'https://api.github.com/repos/{owner}/{repo}/pulls';
-const TOKEN = process.env.GITHUB_TOKEN;
-const HEADERS = {
-  Authorization: `token ${TOKEN}`,
-  Accept: 'application/vnd.github.v3+json',
-};
+const { config } = require('./config');
 
 async function getReleases(owner, repo, startDate, endDate) {
   let response = await axios.get(
-    GITHUB_RELEASE_API_URL.replace('{owner}', owner).replace('{repo}', repo),
-    { headers: HEADERS }
+    config.GITHUB_RELEASE_API_URL.replace('{owner}', owner).replace('{repo}', repo),
+    { headers: config.HEADERS }
   );
   let releases = [];
   if (response.data.length > 0) {
@@ -43,8 +35,8 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
       };
 
       let response = await axios.get(
-        GITHUB_PR_API_URL.replace('{owner}', owner).replace('{repo}', repo),
-        { headers: HEADERS, params }
+        config.GITHUB_PR_API_URL.replace('{owner}', owner).replace('{repo}', repo),
+        { headers: config.HEADERS, params }
       );
 
       if (response.data.length > 0) {

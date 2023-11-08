@@ -6,10 +6,8 @@ const {
   generateMarkdownTable,
 } = require('./utils');
 const repos = require('./data/repos').repos;
-
-const MONTH = 11;
-const YEAR = 2023;
-const dates = getDates(MONTH, YEAR);
+const { config } = require('./config');
+const dates = getDates(config.month, config.year);
 
 async function main() {
   console.log('\n Fetching releases for the following repositories:\n');
@@ -39,14 +37,11 @@ async function main() {
   console.log('\n 👍 All repositories checked \n');
 
   const markdown = generateMarkdownTable(releases, dates.markdownDate);
-  const reportFilename = `./reports/releases/${YEAR}-${dates.twoDigitMonth}.md`;
+  const reportFilename = `./reports/releases/${config.year}-${dates.twoDigitMonth}.md`;
   await writeMarkdownFile(reportFilename, markdown);
   console.log('-------------------------------------------------\n\n');
-  console.log(` 🎉 - ${dates.monthSpelled} ${YEAR} New Releases:`);
+  console.log(` 🎉 - ${dates.monthSpelled} ${config.year} New Releases:`);
   console.table(releases);
-  console.log('\n\n\n');
-  // console.log(`  🙅 - No new releases found:`);
-  // console.table(reposWithNoReleases);
 }
 
 main();

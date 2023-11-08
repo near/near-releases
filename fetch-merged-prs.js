@@ -8,12 +8,8 @@ const {
   countPRs,
 } = require('./utils');
 const repos = require('./data/repos').repos;
-
-const MONTH = 10;
-const YEAR = 2023;
-const dates = getDates(MONTH, YEAR);
-const startDate = dates.startDate;
-const endDate = dates.endDate;
+const { config } = require('./config');
+const dates = getDates(config.month, config.year);
 
 async function main() {
   console.log(
@@ -25,7 +21,12 @@ async function main() {
 
   for (const { owner, repo } of repos) {
     try {
-      const PRs = await getMergedPRs(owner, repo, startDate, endDate);
+      const PRs = await getMergedPRs(
+        owner,
+        repo,
+        dates.startDate,
+        dates.endDate
+      );
       if (PRs.length > 0) {
         const prList = formatPRs(PRs);
         reposWithPRs.push({ repo, prList });
@@ -38,11 +39,11 @@ async function main() {
 
   const totalPRs = countPRs(reposWithPRs);
   const markdownContent = generatePRsMarkdownDoc(reposWithPRs, dates);
-  const reportFilename = `./reports/merged-prs/${YEAR}-${dates.twoDigitMonth}.md`;
+  const reportFilename = `./reports/merged-prs/${config.year}-${dates.twoDigitMonth}.md`;
 
   console.log('-------------------------------------------------\n');
   console.log(
-    ` 🚀 ${totalPRs} merged PRs found for ${dates.monthSpelled} ${YEAR}\n\n`
+    ` 🚀 ${totalPRs} merged PRs found for ${dates.monthSpelled} ${config.year}\n\n`
   );
 
   await writeMarkdownFile(reportFilename, markdownContent);
