@@ -3,8 +3,9 @@ const {
   writeMarkdownFile,
   getReleases,
   getDates,
+  generateMarkdownTable,
 } = require('./utils');
-const repos = require('./repos').repos;
+const repos = require('./data/repos').repos;
 
 const MONTH = 11;
 const YEAR = 2023;
@@ -37,10 +38,10 @@ async function main() {
   }
   console.log('\n 👍 All repositories checked \n');
 
-  const markdown = generateMarkdown(releases, dates.markdownDate);
+  const markdown = generateMarkdownTable(releases, dates.markdownDate);
   const reportFilename = `./reports/releases/${YEAR}-${dates.twoDigitMonth}.md`;
   await writeMarkdownFile(reportFilename, markdown);
-  console.log('-------------------------------------------------\n\n')
+  console.log('-------------------------------------------------\n\n');
   console.log(` 🎉 - ${dates.monthSpelled} ${YEAR} New Releases:`);
   console.table(releases);
   console.log('\n\n\n');
