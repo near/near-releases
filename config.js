@@ -5,7 +5,5 @@ exports.config = {
   HEADERS: {
     Authorization: `token ${process.env.GITHUB_TOKEN}`,
     Accept: 'application/vnd.github.v3+json',
-  },
-  month: 11,
-  year: 2023,
+  }
 };

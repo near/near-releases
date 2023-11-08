@@ -7,7 +7,8 @@ const {
 } = require('../utils');
 const repos = require('../data/repos').repos;
 const { config } = require('../config');
-const dates = getDates(config.month, config.year);
+console.log(process.argv)
+const dates = getDates(process.argv[2], process.argv[3]);
 
 async function main() {
   console.log('\n Fetching releases for the following repositories:\n');

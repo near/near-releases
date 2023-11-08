@@ -9,7 +9,7 @@ const {
 } = require('../utils');
 const repos = require('../data/repos').repos;
 const { config } = require('../config');
-const dates = getDates(config.month, config.year);
+const dates = getDates(process.argv[2], process.argv[3]);
 
 async function main() {
   console.log(

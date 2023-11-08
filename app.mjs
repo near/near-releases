@@ -14,9 +14,31 @@ inquirer
       message: 'Which file do you want to run?',
       choices: scripts,
     },
+    {
+      type: 'input',
+      name: 'month',
+      message: 'Enter the month (as a number from 1 to 12):',
+      validate: (input) => {
+        const parsed = parseInt(input, 10);
+        return parsed >= 1 && parsed <= 12
+          ? true
+          : 'Please enter a valid month number (1-12).';
+      },
+    },
+    {
+      type: 'input',
+      name: 'year',
+      message: 'Enter the year:',
+      validate: (input) => {
+        const parsed = parseInt(input, 10);
+        return parsed && parsed > 2000 && parsed < 3000
+          ? true
+          : 'Please enter a valid year (greater than 2000).';
+      },
+    },
   ])
   .then((answers) => {
-    const child = spawn('node', [answers.script]);
+    const child = spawn('node', [answers.script, answers.month, answers.year]);
 
     child.stdout.on('data', (data) => {
       console.log(data.toString());
