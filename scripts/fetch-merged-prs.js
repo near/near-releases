@@ -12,7 +12,7 @@ const dates = getDates(process.argv[2], process.argv[3]);
 
 async function main() {
   console.log(
-    '\n - L👀king for merged pull requests for the following repositories:\n'
+    '\n -> L👀king for merged pull requests for the following repositories:\n'
   );
 
   let reposWithPRs = [];
@@ -48,7 +48,7 @@ async function main() {
   await writeMarkdownFile(reportFilename, markdownContent);
 
   console.log('-------------------------------------------------\n');
-  console.log(` ⚠️  NO MERGED PRS FOUND FOR THE FOLLOWING REPOS:`);
+  console.log(` ❌ NO MERGED PRS FOUND FOR THE FOLLOWING REPOS:`);
   console.table(reposWithNoPRs);
 }
 

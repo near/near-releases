@@ -5,11 +5,10 @@ const {
   generateMarkdownTable,
 } = require('../utils');
 const repos = require('../data/repos').repos;
-const { config } = require('../config');
 const dates = getDates(process.argv[2], process.argv[3]);
 
 async function main() {
-  console.log('\n - L👀king for releases for the following repositories:\n')
+  console.log('\n -> L👀king for releases for the following repositories:\n')
   let releases = [];
   let reposWithNoReleases = [];
 
