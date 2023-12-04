@@ -3,9 +3,42 @@ const fs = require('fs').promises;
 const axios = require('axios');
 const { config } = require('./config');
 
+async function getIssues(owner, repo, startDate, endDate) {
+  const params = {
+    state: 'all',
+    sort: 'created',
+    direction: 'desc', // ascending order to start from the earliest issues
+    per_page: 100,
+  };
+
+  let response = await axios.get(
+    config.GITHUB_ISSUES_API_URL.replace('{owner}', owner).replace(
+      '{repo}',
+      repo
+    ),
+    { headers: config.HEADERS, params: params }
+  );
+  let issues = [];
+  if (response.data.length > 0) {
+    response.data.forEach((issue) => {
+      if (
+        !issue.pull_request &&
+        new Date(issue.created_at) >= startDate &&
+        new Date(issue.created_at) <= endDate
+      ) {
+        issues.push(issue);
+      }
+    });
+  }
+  return issues;
+}
+
 async function getReleases(owner, repo, startDate, endDate) {
   let response = await axios.get(
-    config.GITHUB_RELEASE_API_URL.replace('{owner}', owner).replace('{repo}', repo),
+    config.GITHUB_RELEASE_API_URL.replace('{owner}', owner).replace(
+      '{repo}',
+      repo
+    ),
     { headers: config.HEADERS }
   );
   let releases = [];
@@ -35,7 +68,10 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
       };
 
       let response = await axios.get(
-        config.GITHUB_PR_API_URL.replace('{owner}', owner).replace('{repo}', repo),
+        config.GITHUB_PR_API_URL.replace('{owner}', owner).replace(
+          '{repo}',
+          repo
+        ),
         { headers: config.HEADERS, params }
       );
 
@@ -59,9 +95,9 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
   }
 }
 
-function formatPRs(prs) {
+function formatPRs(issues) {
   let prList = [];
-  prs.forEach((pr) => {
+  issues.forEach((pr) => {
     pr.merged_at = pr.merged_at.split('T')[0];
     if (pr.title.length > 40) {
       pr.title = pr.title.substring(0, 50) + '...';
@@ -75,6 +111,24 @@ function formatPRs(prs) {
   });
   return prList;
 }
+
+function formatIssues(issues) {
+  let issueList = [];
+  issues.forEach((issue) => {
+    issue.created_at = issue.created_at.split('T')[0];
+    if (issue.title.length > 40) {
+      issue.title = issue.title.substring(0, 50) + '...';
+    }
+    issueList.push({
+      created_at: issue.created_at,
+      num: `[${issue.number}](${issue.html_url})`,
+      title: `[${issue.title}](${issue.html_url})`,
+    });
+    return;
+  });
+  return issueList;
+}
+
 function generateMarkdownTable(data) {
   if (!data.length) {
     return '# NEAR Dev Report: \n\nNo data available.';
@@ -96,7 +150,7 @@ function generateMarkdownTable(data) {
   return markdownTable;
 }
 
-function generatePRsMarkdownDoc(repos, dates) {
+function generateIssuesMarkdownDoc(repos, dates) {
   let markdownDoc = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
 
   // Generate Table of Contents
@@ -109,7 +163,7 @@ function generatePRsMarkdownDoc(repos, dates) {
 
   // Generate PR tables
   repos.forEach((repo) => {
-    let markdownTable = generateMarkdownTable(repo.prList);
+    let markdownTable = generateMarkdownTable(repo.issueList);
     markdownDoc += `\n## ${repo.repo.toUpperCase()}\n\n` + markdownTable;
   });
   return markdownDoc;
@@ -139,8 +193,10 @@ function countPRs(repos) {
 }
 
 module.exports = {
+  formatIssues,
+  getIssues,
   generateMarkdownTable,
-  generatePRsMarkdownDoc,
+  generateIssuesMarkdownDoc,
   writeMarkdownFile,
   getReleases,
   getMergedPRs,
