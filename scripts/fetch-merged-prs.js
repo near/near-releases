@@ -7,8 +7,8 @@ const {
   formatPRs,
   countPRs,
 } = require('../utils');
-const repos = require('../data/repos').repos;
-const dates = getDates(process.argv[2], process.argv[3]);
+const repos = require('../data/test/test-repos').repos;
+const dates = getDates(10, 2023);
 
 async function main() {
   console.log(

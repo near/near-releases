@@ -27,7 +27,7 @@ async function main() {
       } else {
         reposWithNoReleases.push(repo);
       }
-      process.stdout.write(` ✅ - ${repo}`);
+      process.stdout.write(` ✅ - ${repo} \n`);
     } catch (error) {
       console.error(`⛔️ - Error fetching ${owner}/${repo}: ${error.message}`);
     }

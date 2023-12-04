@@ -82,7 +82,7 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
             new Date(pr.merged_at) >= new Date(startDate) &&
             new Date(pr.merged_at) <= new Date(endDate)
         );
-        process.stdout.write(` ✅ - ${repo}`);
+        process.stdout.write(` ✅ - ${repo} \n`);
         return mergedPRs;
       }
     }
@@ -169,6 +169,25 @@ function generateIssuesMarkdownDoc(repos, dates) {
   return markdownDoc;
 }
 
+function generatePRsMarkdownDoc(repos, dates) {
+  let markdownDoc = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
+
+  // Generate Table of Contents
+  markdownDoc += `## Table of Contents\n\n`;
+  repos.forEach((repo) => {
+    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo})\n`;
+  });
+
+  markdownDoc += `\n-------------------------------------------------\n`;
+
+  // Generate PR tables
+  repos.forEach((repo) => {
+    let markdownTable = generateMarkdownTable(repo.prList);
+    markdownDoc += `\n## ${repo.repo.toUpperCase()}\n\n` + markdownTable;
+  });
+  return markdownDoc;
+}
+
 async function writeMarkdownFile(filename, content) {
   await fs.writeFile(filename, content, 'utf8');
   console.log(` 📝 Report created @ ${filename}\n`);
@@ -197,6 +216,7 @@ module.exports = {
   getIssues,
   generateMarkdownTable,
   generateIssuesMarkdownDoc,
+  generatePRsMarkdownDoc,
   writeMarkdownFile,
   getReleases,
   getMergedPRs,
