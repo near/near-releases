@@ -1,7 +1,62 @@
 require('dotenv').config();
 const fs = require('fs').promises;
 const axios = require('axios');
+const { google } = require('googleapis');
+const nodemailer = require('nodemailer');
+const { marked } = require('marked');
 const { config } = require('./config');
+
+const OAuth2 = google.auth.OAuth2;
+
+async function createTransporter() {
+  try {
+    const oauth2Client = new OAuth2(
+      process.env.CLIENT_ID,
+      process.env.ACCESS_CODE,
+      'https://developers.google.com/oauthplayground'
+    );
+
+    oauth2Client.setCredentials({
+      refresh_token: process.env.REFRESH_TOKEN,
+    });
+
+    const accessToken = await new Promise((resolve, reject) => {
+      oauth2Client.getAccessToken((err, token) => {
+        if (err) {
+          console.log('*ERR: ', err);
+          reject();
+        }
+        resolve(token);
+      });
+    });
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        type: 'OAuth2',
+        user: process.env.EMAIL,
+        accessToken,
+        clientId: 'process.env.CLIENT_ID',
+        clientSecret: process.env.ACCESS_CODE,
+        refreshToken: process.env.REFRESH_TOKEN,
+      },
+    });
+    return transporter;
+  } catch (err) {
+    return err;
+  }
+}
+
+async function sendEmail(title, emailTxt) {
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: 'josh@near.org',
+    subject: `${title}`,
+    html: emailTxt,
+  };
+  let emailTransporter = await createTransporter();
+  await emailTransporter.sendMail(mailOptions);
+}
 
 async function getIssues(owner, repo, startDate, endDate) {
   const params = {
@@ -150,23 +205,46 @@ function generateMarkdownTable(data) {
   return markdownTable;
 }
 
-function generateIssuesMarkdownDoc(repos, dates) {
-  let markdownDoc = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
+function generateMarkdownDoc(repos, dates, type) {
+  let docType = type === 'issues' ? 'Issues' : 'Merged Pull Requests';
+  let listType = type === 'issues' ? 'issueList' : 'prList';
+
+  let markdownDoc = `# NEAR ${docType} \n ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
 
   // Generate Table of Contents
   markdownDoc += `## Table of Contents\n\n`;
   repos.forEach((repo) => {
-    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo})\n`;
+    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo.toLowerCase()})\n`;
   });
 
   markdownDoc += `\n-------------------------------------------------\n`;
 
-  // Generate PR tables
+  // Generate tables for issues or PRs
   repos.forEach((repo) => {
-    let markdownTable = generateMarkdownTable(repo.issueList);
+    let markdownTable = generateMarkdownTable(repo[listType]);
     markdownDoc += `\n## ${repo.repo.toUpperCase()}\n\n` + markdownTable;
   });
+
   return markdownDoc;
+}
+
+function markdownToHtml(markdown) {
+  const renderer = new marked.Renderer();
+
+  renderer.heading = function (text, level) {
+    // Create a slug from the header text
+    const slug = text
+      .toLowerCase()
+      .replace(/[\s]+/g, '-')
+      .replace(/[^\w\-]+/g, '');
+    return `<h${level} id="${slug}">${text}</h${level}>`;
+  };
+  let emailTxt = marked.parse(markdown, { renderer: renderer });
+  emailTxt = emailTxt.replace(
+    /<table>/g,
+    '<table border="1" cellpadding="10" cellspacing="5" style="border-collapse: collapse;">'
+  );
+  return emailTxt;
 }
 
 async function writeMarkdownFile(filename, content) {
@@ -193,10 +271,13 @@ function countPRs(repos) {
 }
 
 module.exports = {
+  sendEmail,
+  markdownToHtml,
   formatIssues,
+  createTransporter,
   getIssues,
   generateMarkdownTable,
-  generateIssuesMarkdownDoc,
+  generateMarkdownDoc,
   writeMarkdownFile,
   getReleases,
   getMergedPRs,

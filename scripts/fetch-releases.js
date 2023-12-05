@@ -1,14 +1,16 @@
 const {
-  writeMarkdownFile,
-  getReleases,
   getDates,
+  getReleases,
   generateMarkdownTable,
+  writeMarkdownFile,
+  markdownToHtml,
+  sendEmail,
 } = require('../utils');
-const repos = require('../data/repos').repos;
+const { repos } = require('../data/repos');
 const dates = getDates(process.argv[2], process.argv[3]);
 
 async function main() {
-  console.log('\n -> L👀king for releases for the following repositories:\n')
+  console.log('\n -> L👀king for releases for the following repositories:\n');
   let releases = [];
   let reposWithNoReleases = [];
 
@@ -35,13 +37,21 @@ async function main() {
   console.log('\n 👍 All repositories checked \n');
 
   const markdown = generateMarkdownTable(releases, dates.markdownDate);
+  const emailTxt = markdownToHtml(markdown);
   const reportFilename = `./reports/releases/${process.argv[3]}-${dates.twoDigitMonth}.md`;
-  await writeMarkdownFile(reportFilename, markdown);
+
+  try {
+    await writeMarkdownFile(reportFilename, markdown);
+    const title = `🎉 NEAR Releases for ${dates.monthSpelled} ${process.argv[3]}`;
+    await sendEmail(title, emailTxt);
+  } catch (err) {
+    console.log('ERROR: ', err);
+  }
+
   console.log('-------------------------------------------------\n\n');
   console.log(
     ` 🎉 - ${dates.markdownDate.monthSpelled} ${process.argv[3]} New Releases:`
   );
   console.table(releases);
 }
-
 main();
