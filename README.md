@@ -1,4 +1,4 @@
-# Release and Merged Pull Request Aggregator
+# Repo Reports
 
 - Query many repositories
 - Generate markdown reports
