@@ -9,8 +9,8 @@ const {
   markdownToHtml,
   sendEmail,
 } = require('../utils');
-const repos = require('../data/test/test-repos').repos;
-const dates = getDates(10, 2023);
+const { repos } = require('../data/repos');
+const dates = getDates(process.argv[2], process.argv[3]);
 
 async function main() {
   console.log(
@@ -39,12 +39,12 @@ async function main() {
   console.log('\n 👍 All repositories checked \n');
 
   const totalPRs = countPRs(reposWithPRs);
-  const markdownContent = generatePRsMarkdownDoc(reposWithPRs, dates);
-  const emailTxt = markdownToHtml(markdownContent);
+  const markdown = generatePRsMarkdownDoc(reposWithPRs, dates);
+  const emailTxt = markdownToHtml(markdown);
   const reportFilename = `./reports/merged-prs/${process.argv[3]}-${dates.twoDigitMonth}.md`;
 
   try {
-    await writeMarkdownFile(reportFilename, markdownContent);
+    await writeMarkdownFile(reportFilename, markdown);
     const title = `🚀 NEAR Merged PRs for ${dates.monthSpelled} ${process.argv[3]}`;
     await sendEmail(title, emailTxt);
   } catch (err) {

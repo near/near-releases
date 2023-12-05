@@ -137,7 +137,7 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
             new Date(pr.merged_at) >= new Date(startDate) &&
             new Date(pr.merged_at) <= new Date(endDate)
         );
-        process.stdout.write(` ✅ - ${repo} \n`);
+        process.stdout.write(` ✅ - ${repo}`);
         return mergedPRs;
       }
     }
@@ -259,7 +259,6 @@ function markdownToHtml(markdown) {
     /<table>/g,
     '<table border="1" cellpadding="10" cellspacing="5" style="border-collapse: collapse;">'
   );
-  console.log(emailTxt);
   return emailTxt;
 }
 
