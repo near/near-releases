@@ -4,10 +4,10 @@ const {
   getMergedPRs,
   formatPRs,
   countPRs,
-  sendEmail,
   generateMarkdownDoc,
   writeMarkdownFile,
-  markdownToHtml
+  markdownToHtml,
+  sendEmail
 } = require('../utils');
 const { repos } = require('../data/repos');
 const dates = getDates(process.argv[2], process.argv[3]);

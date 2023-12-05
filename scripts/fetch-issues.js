@@ -34,6 +34,7 @@ async function main() {
       }
     }
     console.log('\n 👍 All repositories checked \n');
+    
     const markdownContent = generateMarkdownDoc(reposWithIssues, dates, 'issues');
     const reportFilename = `./reports/issues/10-${dates.twoDigitMonth}.md`;
   

@@ -1,8 +1,8 @@
 const {
-  writeMarkdownFile,
-  getReleases,
   getDates,
+  getReleases,
   generateMarkdownTable,
+  writeMarkdownFile,
   markdownToHtml,
   sendEmail,
 } = require('../utils');
