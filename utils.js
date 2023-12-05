@@ -205,41 +205,26 @@ function generateMarkdownTable(data) {
   return markdownTable;
 }
 
-function generateIssuesMarkdownDoc(repos, dates) {
-  let markdownDoc = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
+function generateMarkdownDoc(repos, dates, type) {
+  let docType = type === 'issues' ? 'Issues' : 'Merged Pull Requests';
+  let listType = type === 'issues' ? 'issueList' : 'prList';
+
+  let markdownDoc = `# NEAR ${docType} \n ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
 
   // Generate Table of Contents
   markdownDoc += `## Table of Contents\n\n`;
   repos.forEach((repo) => {
-    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo})\n`;
+    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo.toLowerCase()})\n`;
   });
 
   markdownDoc += `\n-------------------------------------------------\n`;
 
-  // Generate PR tables
+  // Generate tables for issues or PRs
   repos.forEach((repo) => {
-    let markdownTable = generateMarkdownTable(repo.issueList);
+    let markdownTable = generateMarkdownTable(repo[listType]);
     markdownDoc += `\n## ${repo.repo.toUpperCase()}\n\n` + markdownTable;
   });
-  return markdownDoc;
-}
 
-function generatePRsMarkdownDoc(repos, dates) {
-  let markdownDoc = `# NEAR Merged Pull Requests for ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
-
-  // Generate Table of Contents
-  markdownDoc += `## Table of Contents\n\n`;
-  repos.forEach((repo) => {
-    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo.toLowerCase()}) \n`;
-  });
-
-  markdownDoc += `\n-------------------------------------------------\n`;
-
-  // Generate PR tables
-  repos.forEach((repo) => {
-    let markdownTable = generateMarkdownTable(repo.prList);
-    markdownDoc += `\n## ${repo.repo.toUpperCase()}\n\n` + markdownTable;
-  });
   return markdownDoc;
 }
 
@@ -292,8 +277,7 @@ module.exports = {
   createTransporter,
   getIssues,
   generateMarkdownTable,
-  generateIssuesMarkdownDoc,
-  generatePRsMarkdownDoc,
+  generateMarkdownDoc,
   writeMarkdownFile,
   getReleases,
   getMergedPRs,

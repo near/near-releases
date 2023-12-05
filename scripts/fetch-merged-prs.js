@@ -2,12 +2,12 @@ require('dotenv').config();
 const {
   getDates,
   getMergedPRs,
-  writeMarkdownFile,
-  generatePRsMarkdownDoc,
   formatPRs,
   countPRs,
-  markdownToHtml,
   sendEmail,
+  generateMarkdownDoc,
+  writeMarkdownFile,
+  markdownToHtml
 } = require('../utils');
 const { repos } = require('../data/repos');
 const dates = getDates(process.argv[2], process.argv[3]);
@@ -39,7 +39,7 @@ async function main() {
   console.log('\n 👍 All repositories checked \n');
 
   const totalPRs = countPRs(reposWithPRs);
-  const markdown = generatePRsMarkdownDoc(reposWithPRs, dates);
+  const markdown = generateMarkdownDoc(reposWithPRs, dates, 'prs');
   const emailTxt = markdownToHtml(markdown);
   const reportFilename = `./reports/merged-prs/${process.argv[3]}-${dates.twoDigitMonth}.md`;
 
@@ -57,7 +57,7 @@ async function main() {
   );
 
   console.log('-------------------------------------------------\n');
-  console.log(` ⚠️ NO MERGED PRS FOUND FOR THE FOLLOWING REPOS:`);
+  console.log(` ⚠️  NO MERGED PRS FOUND FOR THE FOLLOWING REPOS:`);
   console.table(reposWithNoPRs);
 }
 
