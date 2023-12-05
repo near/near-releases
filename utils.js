@@ -3,6 +3,7 @@ const fs = require('fs').promises;
 const axios = require('axios');
 const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
+const { marked } = require('marked');
 const { config } = require('./config');
 
 const OAuth2 = google.auth.OAuth2;
@@ -46,7 +47,16 @@ async function createTransporter() {
   }
 }
 
-
+async function sendEmail(title, emailTxt) {
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: 'josh@near.org',
+    subject: `${title}`,
+    html: emailTxt,
+  };
+  let emailTransporter = await createTransporter();
+  await emailTransporter.sendMail(mailOptions);
+}
 
 async function getIssues(owner, repo, startDate, endDate) {
   const params = {
@@ -233,6 +243,26 @@ function generatePRsMarkdownDoc(repos, dates) {
   return markdownDoc;
 }
 
+function markdownToHtml(markdown) {
+  const renderer = new marked.Renderer();
+
+  renderer.heading = function (text, level) {
+    // Create a slug from the header text
+    const slug = text
+      .toLowerCase()
+      .replace(/[\s]+/g, '-')
+      .replace(/[^\w\-]+/g, '');
+    return `<h${level} id="${slug}">${text}</h${level}>`;
+  };
+  let emailTxt = marked.parse(markdown, { renderer: renderer });
+  emailTxt = emailTxt.replace(
+    /<table>/g,
+    '<table border="1" cellpadding="10" cellspacing="5" style="border-collapse: collapse;">'
+  );
+  console.log(emailTxt);
+  return emailTxt;
+}
+
 async function writeMarkdownFile(filename, content) {
   await fs.writeFile(filename, content, 'utf8');
   console.log(` 📝 Report created @ ${filename}\n`);
@@ -257,6 +287,8 @@ function countPRs(repos) {
 }
 
 module.exports = {
+  sendEmail,
+  markdownToHtml,
   formatIssues,
   createTransporter,
   getIssues,
