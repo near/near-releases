@@ -1,7 +1,52 @@
 require('dotenv').config();
 const fs = require('fs').promises;
 const axios = require('axios');
+const { google } = require('googleapis');
+const nodemailer = require('nodemailer');
 const { config } = require('./config');
+
+const OAuth2 = google.auth.OAuth2;
+
+async function createTransporter() {
+  try {
+    const oauth2Client = new OAuth2(
+      process.env.CLIENT_ID,
+      process.env.ACCESS_CODE,
+      'https://developers.google.com/oauthplayground'
+    );
+
+    oauth2Client.setCredentials({
+      refresh_token: process.env.REFRESH_TOKEN,
+    });
+
+    const accessToken = await new Promise((resolve, reject) => {
+      oauth2Client.getAccessToken((err, token) => {
+        if (err) {
+          console.log('*ERR: ', err);
+          reject();
+        }
+        resolve(token);
+      });
+    });
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        type: 'OAuth2',
+        user: process.env.EMAIL,
+        accessToken,
+        clientId: 'process.env.CLIENT_ID',
+        clientSecret: process.env.ACCESS_CODE,
+        refreshToken: process.env.REFRESH_TOKEN,
+      },
+    });
+    return transporter;
+  } catch (err) {
+    return err;
+  }
+}
+
+
 
 async function getIssues(owner, repo, startDate, endDate) {
   const params = {
@@ -175,7 +220,7 @@ function generatePRsMarkdownDoc(repos, dates) {
   // Generate Table of Contents
   markdownDoc += `## Table of Contents\n\n`;
   repos.forEach((repo) => {
-    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo})\n`;
+    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo.toLowerCase()}) \n`;
   });
 
   markdownDoc += `\n-------------------------------------------------\n`;
@@ -213,6 +258,7 @@ function countPRs(repos) {
 
 module.exports = {
   formatIssues,
+  createTransporter,
   getIssues,
   generateMarkdownTable,
   generateIssuesMarkdownDoc,
