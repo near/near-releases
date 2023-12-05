@@ -25,7 +25,8 @@ async function main() {
       if (fetchedReleases.length > 0) {
         const release_url = fetchedReleases[0].html_url;
         const release_date = fetchedReleases[0].published_at.split('T')[0];
-        releases.push({ repo, release_date, release_url });
+        const name = fetchedReleases[0].name;
+        releases.push({ repo, name, release_date, release_url });
       } else {
         reposWithNoReleases.push(repo);
       }
@@ -43,7 +44,8 @@ async function main() {
   try {
     await writeMarkdownFile(reportFilename, markdown);
     const title = `🎉 NEAR Releases for ${dates.monthSpelled} ${process.argv[3]}`;
-    await sendEmail(title, emailTxt);
+    console.log(process.argv[4])
+    if (process.argv[4]) await sendEmail(title, emailTxt);
   } catch (err) {
     console.log('ERROR: ', err);
   }

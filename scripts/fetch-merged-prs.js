@@ -7,7 +7,7 @@ const {
   generateMarkdownDoc,
   writeMarkdownFile,
   markdownToHtml,
-  sendEmail
+  sendEmail,
 } = require('../utils');
 const { repos } = require('../data/repos');
 const dates = getDates(process.argv[2], process.argv[3]);
@@ -46,7 +46,10 @@ async function main() {
   try {
     await writeMarkdownFile(reportFilename, markdown);
     const title = `🚀 NEAR Merged PRs for ${dates.monthSpelled} ${process.argv[3]}`;
-    await sendEmail(title, emailTxt);
+    if (process.argv[4]) {
+      console.log('✉️ - Sending email... ')
+      await sendEmail(title, emailTxt);
+    }
   } catch (err) {
     console.log('ERROR: ', err);
   }

@@ -242,7 +242,8 @@ function markdownToHtml(markdown) {
   let emailTxt = marked.parse(markdown, { renderer: renderer });
   emailTxt = emailTxt.replace(
     /<table>/g,
-    '<table border="1" cellpadding="10" cellspacing="5" style="border-collapse: collapse;">'
+   '<table border="1" cellpadding="5" cellspacing="5" style="border-collapse: collapse; text-align: center;">'
+
   );
   return emailTxt;
 }

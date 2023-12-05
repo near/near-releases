@@ -7,17 +7,13 @@ const scripts = [
   { name: 'Get Merged PRs', value: './scripts/fetch-merged-prs.js' },
 ];
 
-console.log(chalk.greenBright.bold('\n Release & Merged PR Aggregator 🚀'));
+console.log(chalk.greenBright.bold('\n GITHUB REPO REPORTS' ));
 console.log(
   chalk.cyan(
     ' ▻ Query many repositories \n ▻ Generate markdown reports \n ▻ Email results \n'
   )
 );
-console.log(
-  chalk.dim(
-    '(Press ^C at any time to quit)\n'
-  )
-);
+console.log(chalk.dim('(Press ^C at any time to quit)\n'));
 
 inquirer
   .prompt([
@@ -49,9 +45,15 @@ inquirer
           : 'Please enter a valid year (greater than 2000).';
       },
     },
+    {
+      type: 'confirm',
+      name: 'sendEmail',
+      message: 'Would you like to send an email with the results?',
+      default: false,
+    }
   ])
   .then((answers) => {
-    const child = spawn('node', [answers.script, answers.month, answers.year]);
+    const child = spawn('node', [answers.script, answers.month, answers.year, answers.sendEmail]);
 
     child.stdout.on('data', (data) => {
       console.log(data.toString());
@@ -59,10 +61,6 @@ inquirer
 
     child.stderr.on('data', (data) => {
       console.error(`stderr: ${data}`);
-    });
-
-    child.on('close', (code) => {
-      console.log(`Child process exited with code ${code}`);
     });
   })
   .catch((error) => {
