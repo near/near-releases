@@ -158,9 +158,9 @@ function formatPRs(issues) {
       pr.title = pr.title.substring(0, 50) + '...';
     }
     prList.push({
-      merged_at: pr.merged_at,
-      num: `[${pr.number}](${pr.html_url})`,
-      title: `[${pr.title}](${pr.html_url})`,
+      DATE: pr.merged_at,
+      PR: `[${pr.number}](${pr.html_url})`,
+      TITLE: `[${pr.title}](${pr.html_url})`,
     });
     return;
   });
@@ -209,10 +209,10 @@ function generateMarkdownDoc(repos, dates, type) {
   let docType = type === 'issues' ? 'Issues' : 'Merged Pull Requests';
   let listType = type === 'issues' ? 'issueList' : 'prList';
 
-  let markdownDoc = `# NEAR ${docType} \n ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
+  let markdownDoc = `# NEAR ${docType} - ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
 
   // Generate Table of Contents
-  markdownDoc += `## Table of Contents\n\n`;
+  markdownDoc += `### Table of Contents\n\n`;
   repos.forEach((repo) => {
     markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo.toLowerCase()})\n`;
   });

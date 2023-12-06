@@ -44,8 +44,10 @@ async function main() {
   try {
     await writeMarkdownFile(reportFilename, markdown);
     const title = `🎉 NEAR Releases for ${dates.monthSpelled} ${process.argv[3]}`;
-    console.log(process.argv[4])
-    if (process.argv[4]) await sendEmail(title, emailTxt);
+    if (process.argv[4]) {
+      console.log('📫 - Sending email... ');
+      await sendEmail(title, emailTxt);
+    }
   } catch (err) {
     console.log('ERROR: ', err);
   }

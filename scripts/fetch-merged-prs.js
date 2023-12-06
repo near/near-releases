@@ -47,7 +47,7 @@ async function main() {
     await writeMarkdownFile(reportFilename, markdown);
     const title = `🚀 NEAR Merged PRs for ${dates.monthSpelled} ${process.argv[3]}`;
     if (process.argv[4]) {
-      console.log('✉️ - Sending email... ')
+      console.log('📫 - Sending email... ');
       await sendEmail(title, emailTxt);
     }
   } catch (err) {
