@@ -46,4 +46,8 @@ exports.repos = [
   // Testing
   { owner: 'near', repo: 'near-workspaces-rs' },
   { owner: 'near', repo: 'near-workspaces-js' },
+
+  // Protocol
+  { owner: 'near', repo: 'nearcore' },
+  { owner: 'near', repo: 'neps' },
 ];
