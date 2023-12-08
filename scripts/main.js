@@ -3,7 +3,7 @@ const { createMergedPrReport } = require('./fetch-merged-prs');
 const { createReleaseReport } = require('./fetch-releases');
 const { repos } = require('../data/repos');
 
-const dates = formatDates(11, 2023);
+const dates = formatDates(10, 2023);
 
 async function main() {
   let markdown = `# NEAR Releases for ${dates.monthSpelled} 2023 \n`;
