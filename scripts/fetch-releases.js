@@ -23,10 +23,9 @@ async function main() {
         dates.endDate
       );
       if (fetchedReleases.length > 0) {
-        const release_url = fetchedReleases[0].html_url;
         const release_date = fetchedReleases[0].published_at.split('T')[0];
-        const name = fetchedReleases[0].name;
-        releases.push({ repo, name, release_date, release_url });
+        const release = `[${fetchedReleases[0].name}](${fetchedReleases[0].html_url})`;
+        releases.push({ repo, release, release_date});
       } else {
         reposWithNoReleases.push(repo);
       }
@@ -36,7 +35,7 @@ async function main() {
     }
   }
   console.log('\n 👍 All repositories checked \n');
-
+ 
   const markdown = generateMarkdownTable(releases, dates.markdownDate);
   const emailTxt = markdownToHtml(markdown);
   const reportFilename = `./reports/releases/${process.argv[3]}-${dates.twoDigitMonth}.md`;
@@ -45,7 +44,7 @@ async function main() {
     await writeMarkdownFile(reportFilename, markdown);
     const title = `🎉 NEAR Releases for ${dates.monthSpelled} ${process.argv[3]}`;
     if (process.argv[4]) {
-      console.log('📫 - Sending email... ');
+      console.log(' 📫  Sending email... ');
       await sendEmail(title, emailTxt);
     }
   } catch (err) {

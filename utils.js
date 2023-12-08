@@ -155,12 +155,12 @@ function formatPRs(issues) {
   issues.forEach((pr) => {
     pr.merged_at = pr.merged_at.split('T')[0];
     if (pr.title.length > 40) {
-      pr.title = pr.title.substring(0, 50) + '...';
+      pr.title = pr.title.substring(0, 20) + '...';
     }
     prList.push({
       DATE: pr.merged_at,
       PR: `[${pr.number}](${pr.html_url})`,
-      TITLE: `[${pr.title}](${pr.html_url})`,
+      DESCRIPTION: `[${pr.title}](${pr.html_url})`,
     });
     return;
   });
