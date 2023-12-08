@@ -1,8 +1,7 @@
 require('dotenv').config();
 const { getMergedPRs, formatPRs, generateMarkdownDoc } = require('../utils');
-const { repos } = require('../data/test/test-repos');
 
-async function createMergedPrReport(dates) {
+async function createMergedPrReport(repos, dates) {
   console.log(
     '\n -> L👀king for merged pull requests for the following repositories:\n'
   );

@@ -2,9 +2,8 @@ const {
   getReleases,
   generateMarkdownTable,
 } = require('../utils');
-const { repos } = require('../data/repos');
 
-async function createReleaseReport(dates) {
+async function createReleaseReport(repos, dates) {
   console.log('\n -> L👀king for releases for the following repositories:\n');
   let releases = [];
   let reposWithNoReleases = [];

@@ -206,7 +206,6 @@ function generateMarkdownTable(data) {
 }
 
 function generateMarkdownDoc(repos) {
-  
   let markdownDoc = '';
   // Generate tables for issues or PRs
   repos.forEach((repo) => {
@@ -231,8 +230,7 @@ function markdownToHtml(markdown) {
   let emailTxt = marked.parse(markdown, { renderer: renderer });
   emailTxt = emailTxt.replace(
     /<table>/g,
-   '<table border="1" cellpadding="5" cellspacing="5" style="border-collapse: collapse; text-align: center;">'
-
+    '<table border="1" cellpadding="5" cellspacing="5" style="border-collapse: collapse; text-align: center;">'
   );
   return emailTxt;
 }
@@ -242,12 +240,16 @@ async function writeMarkdownFile(filename, content) {
   console.log(` 📝 Report created @ ${filename}\n`);
 }
 
-function getDates(month, year) {
+function formatDates(month, year) {
   const startDate = new Date(year, month - 1, 1);
   const endDate = new Date(year, month, 0);
+
   const monthSpelled = startDate.toLocaleString('default', { month: 'long' });
-  const twoDigitMonth = month < 10 ? `0${month}` : month;
-  const markdownDate = { monthSpelled, year };
+  const twoDigitMonth =
+    endDate.getMonth() < 9
+      ? `0${endDate.getMonth() + 1}`
+      : `${endDate.getMonth() + 1}`;
+  const markdownDate = `${endDate.getFullYear()}-${twoDigitMonth}-${endDate.getDate()}`;
 
   return { startDate, endDate, markdownDate, monthSpelled, twoDigitMonth };
 }
@@ -271,7 +273,7 @@ module.exports = {
   writeMarkdownFile,
   getReleases,
   getMergedPRs,
-  getDates,
+  formatDates,
   formatPRs,
   countPRs,
 };
