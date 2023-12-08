@@ -6,9 +6,9 @@ const dates = getDates(11, 2023);
 
 async function main() {
 
-    const releaseReport = await createReleaseReport(dates);
-    const mergedPrReport = await createMergedPrReport(dates);
-    const markdown =  releaseReport + mergedPrReport;
+    let markdown = `# NEAR Releases for ${dates.monthSpelled} 2023 \n`
+    markdown += await createReleaseReport(dates);
+    markdown += await createMergedPrReport(dates);
     writeMarkdownFile('./reports/report.md', markdown);
 }
 

@@ -1,5 +1,4 @@
 const {
-  getDates,
   getReleases,
   generateMarkdownTable,
 } = require('../utils');
@@ -32,7 +31,9 @@ async function createReleaseReport(dates) {
   }
   console.log('\n 👍 All repositories checked \n');
 
-  const markdown = generateMarkdownTable(releases, dates.markdownDate);
+  let markdown = `## Releases  🎉 \n`;
+
+  markdown += generateMarkdownTable(releases);
   return markdown;
 }
 

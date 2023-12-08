@@ -1,10 +1,5 @@
 require('dotenv').config();
-const {
-  getDates,
-  getMergedPRs,
-  formatPRs,
-  generateMarkdownDoc,
-} = require('../utils');
+const { getMergedPRs, formatPRs, generateMarkdownDoc } = require('../utils');
 const { repos } = require('../data/test/test-repos');
 
 async function createMergedPrReport(dates) {
@@ -32,8 +27,8 @@ async function createMergedPrReport(dates) {
     }
   }
   console.log('\n 👍 All repositories checked \n');
-
-  const markdown = generateMarkdownDoc(reposWithPRs, dates, 'prs');
+  let markdown = `## Merged Pull Requests  🚀 \n`;
+  markdown += generateMarkdownDoc(reposWithPRs);
   return markdown;
 }
 

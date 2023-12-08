@@ -137,7 +137,7 @@ async function getMergedPRs(owner, repo, startDate, endDate) {
             new Date(pr.merged_at) >= new Date(startDate) &&
             new Date(pr.merged_at) <= new Date(endDate)
         );
-        process.stdout.write(` ✅ - ${repo}`);
+        process.stdout.write(` ✅ - ${repo} \n`);
         return mergedPRs;
       }
     }
@@ -186,7 +186,7 @@ function formatIssues(issues) {
 
 function generateMarkdownTable(data) {
   if (!data.length) {
-    return '# NEAR Dev Report: \n\nNo data available.';
+    return '# No data available.';
   }
   const headers = Object.keys(data[0]);
 
@@ -205,24 +205,13 @@ function generateMarkdownTable(data) {
   return markdownTable;
 }
 
-function generateMarkdownDoc(repos, dates, type) {
-  let docType = type === 'issues' ? 'Issues' : 'Merged Pull Requests';
-  let listType = type === 'issues' ? 'issueList' : 'prList';
-
-  let markdownDoc = `# NEAR ${docType} - ${dates.markdownDate.monthSpelled} ${dates.markdownDate.year}\n\n`;
-
-  // Generate Table of Contents
-  markdownDoc += `### Table of Contents\n\n`;
-  repos.forEach((repo) => {
-    markdownDoc += `- [${repo.repo.toUpperCase()}](#${repo.repo.toLowerCase()})\n`;
-  });
-
-  markdownDoc += `\n-------------------------------------------------\n`;
-
+function generateMarkdownDoc(repos) {
+  
+  let markdownDoc = '';
   // Generate tables for issues or PRs
   repos.forEach((repo) => {
-    let markdownTable = generateMarkdownTable(repo[listType]);
-    markdownDoc += `\n## ${repo.repo.toUpperCase()}\n\n` + markdownTable;
+    let markdownTable = generateMarkdownTable(repo.prList);
+    markdownDoc += `\n## ${repo.repo.toLowerCase()}\n\n` + markdownTable;
   });
 
   return markdownDoc;

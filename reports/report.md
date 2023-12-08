@@ -1,3 +1,5 @@
+# NEAR Releases for November 2023 
+## Releases  🎉 
 | repo | release | release_date |
 | --- | --- | --- |
 | near-discovery | [11.07.2023](https://github.com/near/near-discovery/releases/tag/latest) | 2023-11-07 |
@@ -8,16 +10,9 @@
 | bos-loader | [v0.9.0](https://github.com/near/bos-loader/releases/tag/v0.9.0) | 2023-11-03 |
 | near-sdk-rs | [near-sys-v0.2.1](https://github.com/near/near-sdk-rs/releases/tag/near-sys-v0.2.1) | 2023-11-19 |
 | near-workspaces-js | [v3.4.0](https://github.com/near/near-workspaces-js/releases/tag/near-workspaces%403.4.0) | 2023-11-24 |
-# NEAR Merged Pull Requests - November 2023
+## Merged Pull Requests  🚀 
 
-### Table of Contents
-
-- [DOCS](#docs)
-- [NEAR-DISCOVERY](#near-discovery)
-
--------------------------------------------------
-
-## DOCS
+## docs
 
 | DATE | PR | DESCRIPTION |
 | --- | --- | --- |
@@ -44,7 +39,7 @@
 | 2023-11-03 | [1563](https://github.com/near/docs/pull/1563) | [Add Seracle to the list of RPC providers](https://github.com/near/docs/pull/1563) |
 | 2023-11-03 | [1552](https://github.com/near/docs/pull/1552) | [QueryApi best practices](https://github.com/near/docs/pull/1552) |
 
-## NEAR-DISCOVERY
+## near-discovery
 
 | DATE | PR | DESCRIPTION |
 | --- | --- | --- |
