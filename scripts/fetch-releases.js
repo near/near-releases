@@ -1,7 +1,4 @@
-const {
-  getReleases,
-  generateMarkdownTable,
-} = require('../utils');
+const { getReleases, generateMarkdownTable } = require('../utils');
 
 async function createReleaseReport(repos, dates) {
   console.log('\n -> L👀king for releases for the following repositories:\n');
@@ -30,10 +27,10 @@ async function createReleaseReport(repos, dates) {
   }
   console.log('\n 👍 All repositories checked \n');
 
-  let markdown = `## Releases  🎉 \n`;
+  let markdown = `## Releases  🎉\n\n`;
 
   markdown += generateMarkdownTable(releases);
   return markdown;
 }
 
-module.exports = { createReleaseReport }
+module.exports = { createReleaseReport };

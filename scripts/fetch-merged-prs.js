@@ -26,7 +26,7 @@ async function createMergedPrReport(repos, dates) {
     }
   }
   console.log('\n 👍 All repositories checked \n');
-  let markdown = `## Merged Pull Requests  🚀 \n`;
+  let markdown = `\n## Merged Pull Requests  🚀\n`;
   markdown += generateMarkdownDoc(reposWithPRs);
   return markdown;
 }
