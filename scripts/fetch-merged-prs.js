@@ -3,7 +3,7 @@ const { getMergedPRs, formatPRs, generateMarkdownDoc } = require('../utils');
 
 async function createMergedPrReport(repos, dates) {
   console.log(
-    '\n -> L👀king for merged pull requests for the following repositories:\n'
+    '\n -> Checking \n'
   );
 
   let reposWithPRs = [];
@@ -26,9 +26,8 @@ async function createMergedPrReport(repos, dates) {
     }
   }
   console.log('\n 👍 All repositories checked \n');
-  let markdown = `\n## Merged Pull Requests  🚀\n`;
-  markdown += generateMarkdownDoc(reposWithPRs);
-  return markdown;
+   
+  return generateMarkdownDoc(reposWithPRs);
 }
 
 module.exports = { createMergedPrReport };
