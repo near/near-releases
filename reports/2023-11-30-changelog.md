@@ -15,6 +15,8 @@ Developer changelog for [essential repositories](/develop/github-overview) when 
 | near-sdk-rs | [near-sys-v0.2.1](https://github.com/near/near-sdk-rs/releases/tag/near-sys-v0.2.1) | 2023-11-19 |
 | near-workspaces-js | [v3.4.0](https://github.com/near/near-workspaces-js/releases/tag/near-workspaces%403.4.0) | 2023-11-24 |
 
+---
+
 ## Merged Pull Requests  🚀
 
 ## 📄 Documentation

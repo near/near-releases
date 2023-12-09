@@ -15,6 +15,8 @@ Developer changelog for [essential repositories](/develop/github-overview) when 
 | near-workspaces-rs | [near-workspaces-v0.9.0](https://github.com/near/near-workspaces-rs/releases/tag/near-workspaces-v0.9.0) | 2023-10-30 |
 | nearcore | [1.36.0](https://github.com/near/nearcore/releases/tag/1.36.0) | 2023-10-30 |
 
+---
+
 ## Merged Pull Requests  🚀
 
 ## 📄 Documentation

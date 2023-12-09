@@ -12,6 +12,8 @@ Developer changelog for [essential repositories](/develop/github-overview) when 
 | bos-cli-rs | [0.3.5 - 2023-08-05](https://github.com/bos-cli-rs/bos-cli-rs/releases/tag/v0.3.5) | 2023-08-07 |
 | near-cli-rs | [0.5.2 - 2023-08-17](https://github.com/near/near-cli-rs/releases/tag/v0.5.2) | 2023-08-17 |
 
+---
+
 ## Merged Pull Requests  🚀
 
 ## 📄 Documentation

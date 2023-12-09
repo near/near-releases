@@ -3,7 +3,7 @@ const { createMergedPrReport } = require('./scripts/fetch-merged-prs');
 const { createReleaseReport } = require('./scripts/fetch-releases');
 const { repos } = require('./data/repos');
 
-const dates = formatDates(9, 2023);
+const dates = formatDates(1, 2023);
 
 function getUniqueTypes() {
   const types = new Set();
@@ -19,7 +19,7 @@ async function main() {
   const types = getUniqueTypes(repos);
 
   markdown += await createReleaseReport(repos, dates);
-  markdown += `\n## Merged Pull Requests  🚀\n`;
+  markdown += `\n---\n\n## Merged Pull Requests  🚀\n`;
 
   for (const type of types) {
     const filteredRepos = repos.filter((repo) => repo.type === type);

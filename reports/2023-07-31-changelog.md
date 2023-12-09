@@ -10,6 +10,8 @@ Developer changelog for [essential repositories](/develop/github-overview) when 
 | web3-onboard | [2.24.5](https://github.com/blocknative/web3-onboard/releases/tag/2.24.5) | 2023-07-20 |
 | nearcore | [1.35.0](https://github.com/near/nearcore/releases/tag/1.35.0) | 2023-07-25 |
 
+---
+
 ## Merged Pull Requests  🚀
 
 ## 📄 Documentation
