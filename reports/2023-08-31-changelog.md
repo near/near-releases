@@ -1,5 +1,7 @@
 # August 2023
 
+ NEAR Developer Changelog for [essential repositories](/develop/github-overview) when building on NEAR Protocol. 🏗️
+
 ## Releases  🎉
 
 | repo | release | release_date |
