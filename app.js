@@ -3,7 +3,7 @@ const { createMergedPrReport } = require('./scripts/fetch-merged-prs');
 const { createReleaseReport } = require('./scripts/fetch-releases');
 const { repos } = require('./data/repos');
 
-const dates = formatDates(8, 2023);
+const dates = formatDates(9, 2023);
 
 function getUniqueTypes() {
   const types = new Set();
@@ -14,7 +14,7 @@ function getUniqueTypes() {
 }
 
 async function main() {
-  let markdown = `# ${dates.monthSpelled} 2023\n\n  Developer changelog for [essential repositories](/develop/github-overview) when building on NEAR Protocol. 🏗️\n\n`;
+  let markdown = `# ${dates.monthSpelled} 2023\n\nDeveloper changelog for [essential repositories](/develop/github-overview) when building on NEAR Protocol. 🏗️\n\n`;
 
   const types = getUniqueTypes(repos);
 

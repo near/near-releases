@@ -1,12 +1,20 @@
 # August 2023
 
-  Developer changelog for [essential repositories](/develop/github-overview) when building on NEAR Protocol. 🏗️
+Developer changelog for [essential repositories](/develop/github-overview) when building on NEAR Protocol. 🏗️
 
+## Releases  🎉
+
+| repo | release | release_date |
+| --- | --- | --- |
+| vm | [2.3.2](https://github.com/NearSocial/VM/releases/tag/2.3.2) | 2023-08-28 |
+| wallet-selector | [v8.5.1](https://github.com/near/wallet-selector/releases/tag/v8.5.1) | 2023-08-23 |
+| web3-onboard | [2.24.9](https://github.com/blocknative/web3-onboard/releases/tag/2.24.9) | 2023-08-29 |
+| bos-cli-rs | [0.3.5 - 2023-08-05](https://github.com/bos-cli-rs/bos-cli-rs/releases/tag/v0.3.5) | 2023-08-07 |
+| near-cli-rs | [0.5.2 - 2023-08-17](https://github.com/near/near-cli-rs/releases/tag/v0.5.2) | 2023-08-17 |
 
 ## Merged Pull Requests  🚀
 
 ## 📄 Documentation
-
 
 ### docs
 
@@ -21,7 +29,6 @@
 | 2023-08-01 | [1455](https://github.com/near/docs/pull/1455) | [improve QueryAPI docs](https://github.com/near/docs/pull/1455) |
 
 ## 🚀 BOS
-
 
 ### near-discovery
 
@@ -89,7 +96,6 @@
 
 ## 🔑 Wallet / Auth
 
-
 ### wallet-selector
 
 | DATE | PR | DESCRIPTION |
@@ -119,7 +125,6 @@
 
 ## 📝 Smart Contracts
 
-
 ### near-sdk-rs
 
 | DATE | PR | DESCRIPTION |
@@ -142,7 +147,6 @@
 
 ## 🧪 Testing
 
-
 ### near-workspaces-rs
 
 | DATE | PR | DESCRIPTION |
@@ -150,7 +154,6 @@
 | 2023-08-02 | [283](https://github.com/near/near-workspaces-rs/pull/283) | [chore: Updated near deps to 0.17](https://github.com/near/near-workspaces-rs/pull/283) |
 
 ## 🔎 Data Indexing
-
 
 ### queryapi
 
@@ -186,7 +189,6 @@
 | 2023-08-01 | [157](https://github.com/near/queryapi/pull/157) | [DPLT-1074 Queue real...](https://github.com/near/queryapi/pull/157) |
 
 ## ⛓️ Protocol
-
 
 ### neps
 
