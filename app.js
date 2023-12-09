@@ -1,9 +1,14 @@
-const { writeMarkdownFile, formatDates } = require('./utils');
+const {
+  writeMarkdownFile,
+  formatDates,
+  markdownToHtml,
+  sendEmail,
+} = require('./utils');
 const { createMergedPrReport } = require('./scripts/fetch-merged-prs');
 const { createReleaseReport } = require('./scripts/fetch-releases');
 const { repos } = require('./data/repos');
 
-const dates = formatDates(1, 2023);
+const dates = formatDates(11, 2023);
 
 function getUniqueTypes() {
   const types = new Set();
@@ -19,6 +24,7 @@ async function main() {
   const types = getUniqueTypes(repos);
 
   markdown += await createReleaseReport(repos, dates);
+  console.log('\n -> L👀king for MERGED PRs for the following repositories:\n');
   markdown += `\n---\n\n## Merged Pull Requests  🚀\n`;
 
   for (const type of types) {
@@ -28,7 +34,12 @@ async function main() {
       markdown += `\n## ${type}\n${data}`;
     }
   }
+  console.log('\n 👍 All repositories checked \n');
   writeMarkdownFile(`./reports/${dates.markdownDate}-changelog.md`, markdown);
+  const emailTxt = markdownToHtml(markdown);
+  const title = `Developer Changelog for ${dates.monthSpelled} 2023`;
+  console.log('\n 📫 Sending email \n');
+  await sendEmail(title, emailTxt);
 }
 
 main();

@@ -2,10 +2,6 @@ require('dotenv').config();
 const { getMergedPRs, formatPRs, generateMarkdownDoc } = require('../utils');
 
 async function createMergedPrReport(repos, dates) {
-  console.log(
-    '\n -> Checking \n'
-  );
-
   let reposWithPRs = [];
   let reposWithNoPRs = [];
 
@@ -25,8 +21,6 @@ async function createMergedPrReport(repos, dates) {
       console.error(`⛔️ - Error checking ${owner}/${repo}: ${error.message}`);
     }
   }
-  console.log('\n 👍 All repositories checked \n');
-   
   return generateMarkdownDoc(reposWithPRs);
 }
 
