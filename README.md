@@ -1,6 +1,6 @@
-# Repo Reports
+# NEAR Releases
 
-- Query many repositories
+- Fetch Releases & PRs for NEAR Dev repositories
 - Generate markdown reports
 - Email results
 
