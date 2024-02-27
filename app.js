@@ -8,7 +8,7 @@ const { createMergedPrReport } = require('./scripts/fetch-merged-prs');
 const { createReleaseReport } = require('./scripts/fetch-releases');
 const { repos } = require('./data/repos');
 
-const dates = formatDates(1, 2024);
+const dates = formatDates(12, 2023);
 
 function getUniqueTypes() {
   const types = new Set();

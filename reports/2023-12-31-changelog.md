@@ -15,7 +15,7 @@ Developer changelog for [essential repositories](https://near.dev) when building
 | bos-cli-rs | [0.3.7 - 2023-12-19](https://github.com/bos-cli-rs/bos-cli-rs/releases/tag/v0.3.7) | 2023-12-19 |
 | near-cli-rs | [0.7.6 - 2023-12-21](https://github.com/near/near-cli-rs/releases/tag/v0.7.6) | 2023-12-21 |
 | near-api-js | [near-api-js@3.0.1](https://github.com/near/near-api-js/releases/tag/near-api-js%403.0.1) | 2023-12-20 |
-| nearcore | [](https://github.com/near/nearcore/releases/tag/1.36.2) | 2023-12-18 |
+| nearcore | [1.36.2](https://github.com/near/nearcore/releases/tag/1.36.2) | 2023-12-18 |
 
 ---
 
