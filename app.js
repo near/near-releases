@@ -20,7 +20,7 @@ function getUniqueTypes() {
 }
 
 async function main() {
-  let markdown = `# ${dates.monthSpelled} 2024\n\nDeveloper changelog for [essential repositories](https://near.dev) when building on NEAR Protocol. 🏗️\n\n`;
+  let markdown = `# ${dates.year} - ${dates.monthSpelled}\n\nDeveloper changelog for [essential repositories](https://near.dev) when building on NEAR Protocol. 🏗️\n\n`;
   markdown += '👉 [Get monthly emails of this report](https://docs.google.com/forms/d/1JfFUbTq3ELUlScJT1UI9PQPuQsv0W2jcTa7P94KrS5U/edit) 👈\n\n'
 
   const types = getUniqueTypes(repos);

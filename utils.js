@@ -251,7 +251,7 @@ function formatDates(month, year) {
       : `${endDate.getMonth() + 1}`;
   const markdownDate = `${endDate.getFullYear()}-${twoDigitMonth}-${endDate.getDate()}`;
 
-  return { startDate, endDate, markdownDate, monthSpelled, twoDigitMonth };
+  return { startDate, endDate, year, markdownDate, monthSpelled, twoDigitMonth };
 }
 
 function countPRs(repos) {
