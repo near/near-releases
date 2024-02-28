@@ -2,16 +2,24 @@ exports.repos = [
   { owner: 'near', repo: 'docs', type: '📄 Documentation' },
 
   // BOS Gateways (Decentralized Front-ends)
-  { owner: 'near', repo: 'near-discovery', type: '🚀 BOS' },
-  { owner: 'near', repo: 'near-discovery-components', type: '🚀 BOS' },
-  { owner: 'nearsocial', repo: 'viewer', type: '🚀 BOS' },
+  { owner: 'near', repo: 'near-discovery', type: '🚀 Decentralized Frontends' },
+  {
+    owner: 'near',
+    repo: 'near-discovery-components',
+    type: '🚀 Decentralized Frontends',
+  },
+  { owner: 'nearsocial', repo: 'viewer', type: '🚀 Decentralized Frontends' },
 
   // BOS Virtual Machine
-  { owner: 'nearsocial', repo: 'vm', type: '🚀 BOS' },
-  { owner: 'near', repo: 'bos-web-engine', type: '🚀 BOS' },
+  { owner: 'nearsocial', repo: 'vm', type: '🚀 Decentralized Frontends' },
+  { owner: 'near', repo: 'bos-web-engine', type: '🚀 Decentralized Frontends' },
 
   // BOS Database
-  { owner: 'nearsocial', repo: 'social-db', type: '🚀 BOS' },
+  {
+    owner: 'nearsocial',
+    repo: 'social-db',
+    type: '🚀 Decentralized Frontends',
+  },
 
   // Wallet Integrators
   { owner: 'near', repo: 'wallet-selector', type: '🔑 Wallet / Auth' },
