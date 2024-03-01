@@ -9,7 +9,7 @@ const { createReleaseReport } = require('./scripts/fetch-releases');
 const { repos } = require('./data/repos');
 
 // manually set the month and year
-const dates = formatDates(1, 2024);
+const dates = formatDates(2, 2024);
 
 function getUniqueTypes() {
   const types = new Set();
