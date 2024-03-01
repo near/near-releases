@@ -5,7 +5,7 @@ async function createMergedPrReport(repos, dates) {
   let reposWithPRs = [];
   let reposWithNoPRs = [];
 
-  for (const { owner, repo } of repos) {
+  for (const { owner, repo, description } of repos) {
     try {
       const PRs = await getMergedPRs(
         owner,
@@ -15,7 +15,7 @@ async function createMergedPrReport(repos, dates) {
       );
       if (PRs.length > 0) {
         const prList = formatPRs(PRs);
-        reposWithPRs.push({ repo, prList });
+        reposWithPRs.push({ repo, prList, description });
       } else reposWithNoPRs.push({ repo });
     } catch (error) {
       console.error(`⛔️ - Error checking ${owner}/${repo}: ${error.message}`);

@@ -210,7 +210,7 @@ function generateMarkdownDoc(repos) {
   // Generate tables for issues or PRs
   repos.forEach((repo) => {
     let markdownTable = generateMarkdownTable(repo.prList);
-    markdownDoc += `\n### ${repo.repo.toLowerCase()}\n\n` + markdownTable;
+    markdownDoc += `\n### ${repo.repo.toLowerCase()}\n\n\> ${repo.description}\n\n` + markdownTable;
   });
 
   return markdownDoc;

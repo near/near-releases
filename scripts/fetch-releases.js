@@ -5,7 +5,7 @@ async function createReleaseReport(repos, dates) {
   let releases = [];
   let reposWithNoReleases = [];
 
-  for (const { owner, repo } of repos) {
+  for (const { owner, repo, description } of repos) {
     try {
       const fetchedReleases = await getReleases(
         owner,
@@ -16,7 +16,7 @@ async function createReleaseReport(repos, dates) {
       if (fetchedReleases.length > 0) {
         const release_date = fetchedReleases[0].published_at.split('T')[0];
         const release = `[${fetchedReleases[0].name}](${fetchedReleases[0].html_url})`;
-        releases.push({ repo, release, release_date });
+        releases.push({ repo, release, description,});
       } else {
         reposWithNoReleases.push(repo);
       }
